@@ -9,4 +9,4 @@ server:
   contextPath: /shadowsocks
 
 global:
-  domain: "localhost"
+  url: "http://localhost:8822"

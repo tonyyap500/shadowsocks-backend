@@ -63,4 +63,8 @@ public interface UserApi {
 	@ApiOperation(value = "用户注销", tags = "user")
 	@RequestMapping(path = "/logout", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
 	ResponseMessageDto logout();
+
+	@ApiOperation(value = "测试", tags = "user")
+	@RequestMapping(path = "/test", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+	ResponseMessageDto test();
 }

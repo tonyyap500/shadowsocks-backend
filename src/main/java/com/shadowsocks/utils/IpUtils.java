@@ -12,6 +12,9 @@ import java.net.UnknownHostException;
 @Slf4j
 public class IpUtils {
 
+    private IpUtils() {
+    }
+
     public static String getCurrentIp(HttpServletRequest request) {
         String ip = null;
 

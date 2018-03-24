@@ -1,23 +1,24 @@
 package com.shadowsocks.web.user;
 
+import com.google.common.collect.Lists;
 import com.shadowsocks.config.GlobalConfig;
+import com.shadowsocks.dto.entity.EmailConfig;
+import com.shadowsocks.dto.entity.EmailObject;
 import com.shadowsocks.dto.entity.User;
 import com.shadowsocks.dto.enums.ActiveStatusEnum;
 import com.shadowsocks.dto.enums.ResultEnum;
 import com.shadowsocks.dto.request.LoginDto;
 import com.shadowsocks.dto.request.RegisterDto;
-import com.shadowsocks.utils.RandomStringUtils;
-import com.shadowsocks.utils.SessionKeyUtils;
+import com.shadowsocks.service.EmailService;
+import com.shadowsocks.utils.*;
 import com.shadowsocks.web.BaseController;
 import com.shadowsocks.dto.ResponseMessageDto;
 import com.shadowsocks.service.UserService;
-import com.shadowsocks.utils.CaptchaUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpSession;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -38,16 +40,17 @@ public class UserApiController extends BaseController implements UserApi {
 	private HttpServletRequest request;
 	private HttpServletResponse response;
     private HttpSession session;
-
-    @Resource
     private GlobalConfig globalConfig;
+    private EmailService emailService;
 
-    public UserApiController(UserService userService, HttpServletRequest request,
-                             HttpServletResponse response, HttpSession session) {
+    public UserApiController(UserService userService, HttpServletRequest request, GlobalConfig globalConfig,
+                             HttpServletResponse response, HttpSession session, EmailService emailService) {
         this.userService = userService;
         this.request = request;
         this.response = response;
         this.session = session;
+        this.globalConfig = globalConfig;
+        this.emailService = emailService;
     }
 
 	@Override
@@ -146,5 +149,18 @@ public class UserApiController extends BaseController implements UserApi {
     public ResponseMessageDto logout() {
         session.removeAttribute(SessionKeyUtils.getKeyForUser());
         return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("退出登录成功").build();
+    }
+
+    @Override
+    public ResponseMessageDto test() {
+        String pattern = "%s/shadowsocks/user/active/%s";
+        String url = String.format(pattern, globalConfig.getUrl(), "activeCode");
+        List<EmailConfig> emailConfigList = emailService.findEmailConfigs();
+
+        String contentPattern = HtmlUtils.getActiveHtmlPattern();
+        String content = String.format(contentPattern, url);
+        EmailObject emailObject = EmailObject.builder().toList(Lists.newArrayList("renjie373270@gmail.com")).subject("激活邮件").content(content).build();
+        EmailUtils.sendEmailAsyc(emailConfigList, emailObject);
+        return null;
     }
 }

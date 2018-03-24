@@ -9,5 +9,5 @@ import org.springframework.context.annotation.Configuration;
 @Data
 @ConfigurationProperties("global")
 public class GlobalConfig {
-    private String domain;
+    private String url;
 }

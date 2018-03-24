@@ -2,8 +2,12 @@ package com.shadowsocks.utils;
 
 import lombok.extern.slf4j.Slf4j;
 
+
 @Slf4j
 public class MD5Utils {
+
+    private MD5Utils() {
+    }
 
     public static String encode(String md5) {
         try {
@@ -19,4 +23,5 @@ public class MD5Utils {
         }
         return "";
     }
+
 }
