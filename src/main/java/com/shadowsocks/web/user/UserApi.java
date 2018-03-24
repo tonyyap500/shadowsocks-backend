@@ -26,15 +26,15 @@ public interface UserApi {
 	 * 查看用户名是否被占用
 	 * */
 	@ApiOperation(value = "查看用户名是否被占用", tags = "user")
-	@RequestMapping(path = "/isUsernameTaken", method = RequestMethod.GET)
-	boolean isUsernameTaken(String username);
+	@RequestMapping(path = "/isUsernameTaken/{username:.+}", method = RequestMethod.GET)
+	boolean isUsernameTaken(@PathVariable("username") String username);
 
 	/**
 	 * 查看邮箱是否被占用
 	 * */
 	@ApiOperation(value = "查看邮箱是否被占用", tags = "user")
-	@RequestMapping(path = "/isEmailTaken", method = RequestMethod.GET)
-	boolean isEmailTaken(String email);
+	@RequestMapping(path = "/isEmailTaken/{email:.+}", method = RequestMethod.GET)
+	boolean isEmailTaken(@PathVariable("email") String email);
 
 	/**
 	 * 注册

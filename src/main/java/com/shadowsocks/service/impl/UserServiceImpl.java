@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Optional<User> login(LoginDto loginDto) {
-		User user = userDao.login(loginDto.getUsername(), loginDto.getPassword());
+		User user = userDao.login(loginDto.getUsername().toLowerCase(), loginDto.getPassword());
 		if(Objects.nonNull(user)) {
 			int loginTimes = user.getLoginTimes();
 			loginTimes = loginTimes + 1;

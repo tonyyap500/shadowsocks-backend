@@ -78,12 +78,12 @@ public class UserApiController extends BaseController implements UserApi {
 
 
     @Override
-    public boolean isUsernameTaken(String username) {
-        return userService.isUsernameTaken(username);
+    public boolean isUsernameTaken(@PathVariable("username:.+") String username) {
+        return userService.isUsernameTaken(username.toLowerCase());
     }
 
     @Override
-    public boolean isEmailTaken(String email) {
+    public boolean isEmailTaken(@PathVariable("email") String email) {
         return userService.isEmailTaken(email);
     }
 
@@ -91,7 +91,7 @@ public class UserApiController extends BaseController implements UserApi {
         String time = LocalDateTime.now().format(formatter);
         String activeCode = RandomStringUtils.generateRandomString();
         return User.builder()
-                .username(registerDto.getUsername())
+                .username(registerDto.getUsername().toLowerCase())
                 .email(registerDto.getEmail())
                 .password(registerDto.getPassword())
                 .inviter(registerDto.getInviter())
