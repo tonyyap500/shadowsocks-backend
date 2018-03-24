@@ -1,7 +1,8 @@
 package com.shadowsocks.web.user;
 
 import com.shadowsocks.dto.ResponseMessageDto;
-import com.shadowsocks.dto.UserRegisterDto;
+import com.shadowsocks.dto.request.LoginDto;
+import com.shadowsocks.dto.request.RegisterDto;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,7 +41,7 @@ public interface UserApi {
 	 * */
 	@ApiOperation(value = "新用户注册", tags = "user")
 	@RequestMapping(path = "/register", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
-    ResponseMessageDto register(@RequestBody UserRegisterDto userRegisterDtoRegisterDto);
+    ResponseMessageDto register(@RequestBody RegisterDto registerDto);
 
 	/**
 	 * 激活
@@ -54,12 +55,12 @@ public interface UserApi {
 	 * */
 	@ApiOperation(value = "用户登录", tags = "user")
 	@RequestMapping(path = "/login", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
-	ResponseMessageDto login(@RequestBody UserRegisterDto userRegisterDtoRegisterDto);
+	ResponseMessageDto login(@RequestBody LoginDto loginDto);
 
 	/**
 	 * 退出登录
 	 * */
 	@ApiOperation(value = "用户注销", tags = "user")
 	@RequestMapping(path = "/logout", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
-	ResponseMessageDto logout(HttpSession session);
+	ResponseMessageDto logout();
 }

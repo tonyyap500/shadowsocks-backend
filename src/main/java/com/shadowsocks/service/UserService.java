@@ -1,6 +1,9 @@
 package com.shadowsocks.service;
 
 import com.shadowsocks.dto.entity.User;
+import com.shadowsocks.dto.request.LoginDto;
+
+import java.util.Optional;
 
 
 public interface UserService {
@@ -18,17 +21,17 @@ public interface UserService {
 	/**
 	 * 注册
 	 * */
-	int register(User user);
+	boolean register(User user);
 
 	/**
 	 * 激活
 	 * */
-	int active(String username);
+	boolean active(String username);
 
 	/**
 	 * 登录
 	 * */
-	User login(User user);
+	Optional<User> login(LoginDto loginDto);
 
 	/**
 	 * 更新登录信息
