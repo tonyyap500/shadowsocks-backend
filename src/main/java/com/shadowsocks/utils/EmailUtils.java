@@ -7,7 +7,6 @@ import com.shadowsocks.dto.enums.ResultEnum;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.mail.Address;
-import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -15,6 +14,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -51,15 +51,15 @@ public class EmailUtils {
 	}
 
 	private static ResultEnum sendEmail(List<EmailConfig> emailConfigList, EmailObject emailObject) {
-		EmailConfig emailConfig = emailConfigList.stream().findAny().orElse(null);
+        int index = new Random().nextInt(emailConfigList.size());
+		EmailConfig emailConfig = emailConfigList.get(index);
 		Properties props = buildEmailProperties(emailConfig);
 		Session session = Session.getInstance(props);
 		try {
-			Message msg = new MimeMessage(session);
+			MimeMessage msg = new MimeMessage(session);
 			msg.setSubject(emailObject.getSubject());
-			msg.setText(emailObject.getContent());
+			msg.setText(emailObject.getContent(), "utf-8", "html");
 			msg.setFrom(new InternetAddress("VideoWebsite"));
-
 			Transport transport = session.getTransport();
 			transport.connect(emailConfig.getUsername(), emailConfig.getPassword());
 			Address[] addresses = buildAddresses(emailObject);

@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
+import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -116,8 +117,15 @@ public class UserApiController extends BaseController implements UserApi {
 
         if(result) {
             //TODO 为邀请人充值
-            //TODO 发送激活邮件
-            return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("注册成功").build();
+            String pattern = "%s/shadowsocks/user/active/%s";
+            String url = String.format(pattern, globalConfig.getUrl(), user.getActiveCode());
+            List<EmailConfig> emailConfigList = emailService.findEmailConfigs();
+
+            String contentPattern = HtmlUtils.getActiveHtmlPattern();
+            String content = MessageFormat.format(contentPattern, url, url);
+            EmailObject emailObject = EmailObject.builder().toList(Lists.newArrayList(registerDto.getEmail())).subject("OceanHere 激活邮件").content(content).build();
+            EmailUtils.sendEmailAsyc(emailConfigList, emailObject);
+            return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("注册成功, 请检查邮箱并激活账号").build();
         }
         return ResponseMessageDto.builder().result(ResultEnum.FAIL).message("注册失败").build();
     }
@@ -149,18 +157,5 @@ public class UserApiController extends BaseController implements UserApi {
     public ResponseMessageDto logout() {
         session.removeAttribute(SessionKeyUtils.getKeyForUser());
         return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("退出登录成功").build();
-    }
-
-    @Override
-    public ResponseMessageDto test() {
-        String pattern = "%s/shadowsocks/user/active/%s";
-        String url = String.format(pattern, globalConfig.getUrl(), "activeCode");
-        List<EmailConfig> emailConfigList = emailService.findEmailConfigs();
-
-        String contentPattern = HtmlUtils.getActiveHtmlPattern();
-        String content = String.format(contentPattern, url);
-        EmailObject emailObject = EmailObject.builder().toList(Lists.newArrayList("renjie373270@gmail.com")).subject("激活邮件").content(content).build();
-        EmailUtils.sendEmailAsyc(emailConfigList, emailObject);
-        return null;
     }
 }
