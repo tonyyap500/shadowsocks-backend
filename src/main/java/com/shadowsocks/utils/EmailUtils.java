@@ -66,7 +66,7 @@ public class EmailUtils {
 			transport.sendMessage(msg, addresses);
 			transport.close();
 		}catch (Exception e) {
-			log.error("邮件发送失败");
+            emailObject.getToList().forEach(to -> log.info("邮件发送失败， 发件人 {}， 收件人 {}", emailConfig.getUsername() + "@" + emailConfig.getSmtpServer().replace("smtp.", ""), to));
 			log.error("{}", e);
 			return ResultEnum.FAIL;
 		}

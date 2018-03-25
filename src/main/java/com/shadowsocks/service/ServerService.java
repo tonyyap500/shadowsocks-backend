@@ -20,6 +20,12 @@ public interface ServerService {
     List<CityDto> findCityList(String country);
 
     /**
+     * 申请使用服务器
+     * */
+    boolean applyServer(int id, int userId);
+
+
+    /**
      * 根据id查询服务器信息
      * */
     Optional<Server> findServerById(int id);

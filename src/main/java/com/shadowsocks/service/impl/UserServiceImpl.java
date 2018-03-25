@@ -41,6 +41,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public Optional<String> findActiveCodeByEmail(String email) {
+		String activeCode = userDao.findActiveCodeByEmail(email);
+		return Optional.ofNullable(activeCode);
+	}
+
+	@Override
 	public boolean active(String activeCode) {
 		return userDao.active(activeCode) == 1;
 	}

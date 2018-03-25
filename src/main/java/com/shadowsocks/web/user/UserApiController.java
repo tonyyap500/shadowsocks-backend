@@ -105,6 +105,17 @@ public class UserApiController extends BaseController implements UserApi {
                 .build();
     }
 
+    private void sendActiveEmail(String email, String activeCode) {
+        String pattern = "%s/shadowsocks/user/active/%s";
+        String url = String.format(pattern, globalConfig.getUrl(), activeCode);
+        List<EmailConfig> emailConfigList = emailService.findEmailConfigs();
+
+        String contentPattern = HtmlUtils.getActiveHtmlPattern();
+        String content = MessageFormat.format(contentPattern, url, url);
+        EmailObject emailObject = EmailObject.builder().toList(Lists.newArrayList(email)).subject("OceanHere 激活邮件").content(content).build();
+        EmailUtils.sendEmailAsyc(emailConfigList, emailObject);
+    }
+
     @Override
     public ResponseMessageDto register(@RequestBody RegisterDto registerDto) {
         String captchaInSession = (String) session.getAttribute(SessionKeyUtils.getKeyForCaptcha());
@@ -117,17 +128,20 @@ public class UserApiController extends BaseController implements UserApi {
 
         if(result) {
             //TODO 为邀请人充值
-            String pattern = "%s/shadowsocks/user/active/%s";
-            String url = String.format(pattern, globalConfig.getUrl(), user.getActiveCode());
-            List<EmailConfig> emailConfigList = emailService.findEmailConfigs();
-
-            String contentPattern = HtmlUtils.getActiveHtmlPattern();
-            String content = MessageFormat.format(contentPattern, url, url);
-            EmailObject emailObject = EmailObject.builder().toList(Lists.newArrayList(registerDto.getEmail())).subject("OceanHere 激活邮件").content(content).build();
-            EmailUtils.sendEmailAsyc(emailConfigList, emailObject);
+            sendActiveEmail(registerDto.getEmail(), user.getActiveCode());
             return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("注册成功, 请检查邮箱并激活账号").build();
         }
         return ResponseMessageDto.builder().result(ResultEnum.FAIL).message("注册失败").build();
+    }
+
+    @Override
+    public ResponseMessageDto resendActiveEmail(String email) {
+        Optional<String> activeCodeOptional = userService.findActiveCodeByEmail(email);
+        if(!activeCodeOptional.isPresent()) {
+            return ResponseMessageDto.builder().result(ResultEnum.FAIL).message("邮箱不存在").build();
+        }
+        activeCodeOptional.ifPresent(activeCode -> sendActiveEmail(email, activeCode));
+        return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("邮件发送成功").build();
     }
 
     @Override

@@ -24,6 +24,11 @@ public interface UserService {
 	boolean register(User user);
 
 	/**
+	 * 根据邮件查找激活码
+	 * */
+	Optional<String> findActiveCodeByEmail(String email);
+
+	/**
 	 * 激活
 	 * */
 	boolean active(String username);

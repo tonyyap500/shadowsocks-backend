@@ -2,12 +2,15 @@ package com.shadowsocks.web.server;
 
 
 import com.shadowsocks.dto.entity.Server;
+import com.shadowsocks.dto.entity.User;
 import com.shadowsocks.dto.response.CityDto;
 import com.shadowsocks.dto.response.CountryDto;
 import com.shadowsocks.dto.response.ServerDto;
 import com.shadowsocks.service.ServerService;
+import com.shadowsocks.utils.SessionKeyUtils;
 import com.shadowsocks.web.BaseController;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.manager.util.SessionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,6 +50,11 @@ public class ServerApiController extends BaseController implements ServerApi{
 
     @Override
     public ServerDto applyServer(@PathVariable("id") int id) {
+        User user = (User) session.getAttribute(SessionKeyUtils.getKeyForUser());
+        boolean result = serverService.applyServer(id, user.getId());
+        if(!result) {
+            return ServerDto.builder().build();
+        }
         Optional<Server> serverOptional = serverService.findServerById(id);
         if(serverOptional.isPresent()) {
             Server server = serverOptional.get();
@@ -55,8 +63,6 @@ public class ServerApiController extends BaseController implements ServerApi{
                     .port(server.getPort())
                     .password(server.getPassword())
                     .build();
-            //TODO 根据id查询时要检测status状态，防止恶意申请服务器
-            //TODO 标记端口已被使用
         }
         return ServerDto.builder().build();
     }

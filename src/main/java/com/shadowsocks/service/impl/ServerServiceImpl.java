@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +29,14 @@ public class ServerServiceImpl implements ServerService{
     @Override
     public List<CityDto> findCityList(String country) {
         return serverDao.findCityList(country);
+    }
+
+    @Override
+    public boolean applyServer(int id, int userId) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String updateTime = LocalDateTime.now().format(formatter);
+        int result = serverDao.applyServer(id, userId, updateTime);
+        return result == 1;
     }
 
     @Override

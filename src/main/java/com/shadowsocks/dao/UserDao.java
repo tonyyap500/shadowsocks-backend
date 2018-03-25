@@ -23,6 +23,10 @@ public interface UserDao {
             "#{lastLoginTime}, #{lastLoginIp}, #{activeStatus}, #{activeCode})")
 	int register(User user);
 
+
+	@Select("select active_code from " + TABLE_NAME + " where email=#{email}")
+	String findActiveCodeByEmail(@Param("email") String email);
+
 	@Update("update " + TABLE_NAME + " set active_status='ACTIVE' where active_code=#{activeCode}")
 	int active(@Param("activeCode") String activeCode);
 

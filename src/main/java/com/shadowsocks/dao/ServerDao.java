@@ -31,7 +31,7 @@ public interface ServerDao {
     )
     Server findById(@Param("id") int id);
 
-    @Select("select distinct country, country_in_chinese from " + TABLE_NAME + " where status='AVALIABLE'")
+    @Select("select distinct country, country_in_chinese from " + TABLE_NAME + " where status='AVAILABLE'")
     @Results(
             id = "findCountryList",
             value = {
@@ -41,7 +41,7 @@ public interface ServerDao {
     )
     List<CountryDto> findCountryList();
 
-    @Select("select id, city, city_in_chinese from " + TABLE_NAME + " where country=#{country} and status='AVALIABLE' limit 5")
+    @Select("select id, city, city_in_chinese from " + TABLE_NAME + " where country=#{country} and status='AVAILABLE' limit 5")
     @Results(
             id = "findCityList",
             value = {
@@ -51,4 +51,8 @@ public interface ServerDao {
             }
     )
     List<CityDto> findCityList(@Param("country") String country);
+
+    @Update("update from " + TABLE_NAME + " set status='NONAVAILABLE', current_owner=#{userId}, update_time=#{updateTime} " +
+            "where id=#{id} and status='AVAILABLE'")
+    int applyServer(@Param("id") int id, @Param("userId") int userId, @Param("updateTime") String updateTime);
 }

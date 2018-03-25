@@ -42,6 +42,13 @@ public interface UserApi {
     ResponseMessageDto register(@RequestBody RegisterDto registerDto);
 
 	/**
+	 * 重新发送激活邮件
+	 * */
+	@ApiOperation(value = "重新发送激活邮件", tags = "user")
+	@RequestMapping(path = "/resend/{email:.+}", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+	ResponseMessageDto resendActiveEmail(@PathVariable("email") String email);
+
+	/**
 	 * 激活
 	 * */
 	@ApiOperation(value = "用户激活", tags = "user")
