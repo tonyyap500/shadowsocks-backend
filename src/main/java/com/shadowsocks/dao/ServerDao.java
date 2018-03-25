@@ -52,7 +52,7 @@ public interface ServerDao {
     )
     List<CityDto> findCityList(@Param("country") String country);
 
-    @Update("update from " + TABLE_NAME + " set status='NONAVAILABLE', current_owner=#{userId}, update_time=#{updateTime} " +
+    @Update("update " + TABLE_NAME + " set status='NONAVAILABLE', current_owner=#{userId}, update_time=#{updateTime} " +
             "where id=#{id} and status='AVAILABLE'")
     int applyServer(@Param("id") int id, @Param("userId") int userId, @Param("updateTime") String updateTime);
 }
