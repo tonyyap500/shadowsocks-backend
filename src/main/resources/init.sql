@@ -79,3 +79,15 @@ CREATE TABLE `balance` (
   UNIQUE KEY `user_unique_key` (`user_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+
+CREATE TABLE `payment_order` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) NOT NULL,
+  `amount` double NOT NULL,
+  `channel` varchar(30) NOT NULL,
+  `status` varchar(10) NOT NULL,
+  `remark` varchar(255) NOT NULL,
+  `create_time` varchar(30) NOT NULL,
+  `update_time` varchar(30) DEFAULT NULL,
+  PRIMARY KEY(`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
