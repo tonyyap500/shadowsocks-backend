@@ -1,9 +1,7 @@
 package com.shadowsocks.dao;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Update;
+import com.shadowsocks.dto.entity.Balance;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface BalanceDao {
@@ -16,4 +14,17 @@ public interface BalanceDao {
 
     @Update("update " + TABLE_NAME + " set balance=balance+#{amount}, update_time=#{updateTime}where user_id=#{userId}")
     int addBalanceByUserId(@Param("userId") int userId, @Param("amount") double amount, @Param("updateTime") String updateTime);
+
+    @Select("select * from " + TABLE_NAME + " where user_id=#{userId}")
+    @Results(
+            id = BASE_RESULT,
+            value = {
+                    @Result(property = "id", column = "id"),
+                    @Result(property = "userId", column = "user_id"),
+                    @Result(property = "currentBalance", column = "balance"),
+                    @Result(property = "createTime", column = "create_time"),
+                    @Result(property = "updateTime", column = "update_time")
+            }
+    )
+    Balance findBalanceByUserId(@Param("userId") int userId);
 }

@@ -15,9 +15,8 @@ public class HtmlUtils {
     private HtmlUtils() {
     }
 
-    public static String getActiveHtmlPattern() {
+    private static String buildContent(String fileName) {
         String folder = System.getProperty("user.dir");
-        String fileName = "active.html";
         Path path = Paths.get(folder, fileName);
 
         try {
@@ -35,5 +34,15 @@ public class HtmlUtils {
             log.error("{}", e);
         }
         return "";
+    }
+
+    public static String getActiveHtmlPattern() {
+        String fileName = "active.html";
+        return buildContent(fileName);
+    }
+
+    public static String getPurchaseHtmlPattern() {
+        String fileName = "purchase.html";
+        return buildContent(fileName);
     }
 }

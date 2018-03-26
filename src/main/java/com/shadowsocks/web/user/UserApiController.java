@@ -126,7 +126,7 @@ public class UserApiController extends BaseController implements UserApi {
         List<EmailConfig> emailConfigList = emailService.findEmailConfigs();
 
         String contentPattern = HtmlUtils.getActiveHtmlPattern();
-        String content = MessageFormat.format(contentPattern, activeURL, activeURL);
+        String content = MessageFormat.format(contentPattern, activeURL);
         EmailObject emailObject = EmailObject.builder().toList(Lists.newArrayList(email)).subject("OceanHere 激活邮件").content(content).build();
         EmailUtils.sendEmailAsyc(emailConfigList, emailObject);
     }

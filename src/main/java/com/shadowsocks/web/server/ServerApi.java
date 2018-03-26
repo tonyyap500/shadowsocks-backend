@@ -1,6 +1,7 @@
 package com.shadowsocks.web.server;
 
 
+import com.shadowsocks.dto.ResponseMessageDto;
 import com.shadowsocks.dto.response.CityDto;
 import com.shadowsocks.dto.response.CountryDto;
 import com.shadowsocks.dto.response.ServerDto;
@@ -23,6 +24,6 @@ public interface ServerApi {
     List<CityDto> getCityList(@PathVariable("country") String country);
 
     @ApiOperation(value = "购买服务器", tags = "server")
-    @RequestMapping(path = "/purchase/{serverId}", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
-    ServerDto purchaseServer(@PathVariable("serverId") int serverId);
+    @RequestMapping(path = "/purchase/{id}", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+    ResponseMessageDto purchaseServer(@PathVariable("id") String id);
 }

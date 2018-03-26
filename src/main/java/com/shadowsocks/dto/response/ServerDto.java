@@ -13,4 +13,7 @@ public class ServerDto {
     private String domain;
     private String port;
     private String password;
+    private String encryption;
+    private String country;
+    private String city;
 }
