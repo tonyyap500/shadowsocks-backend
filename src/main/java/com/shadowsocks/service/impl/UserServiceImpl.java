@@ -52,6 +52,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public Optional<User> findUserByActiveCode(String activeCode) {
+		User user = userDao.findUserByActiveCode(activeCode);
+		return Optional.ofNullable(user);
+	}
+
+	@Override
 	public Optional<User> login(LoginDto loginDto) {
 		User user = userDao.login(loginDto.getUsername().toLowerCase(), loginDto.getPassword());
 		if(Objects.nonNull(user)) {

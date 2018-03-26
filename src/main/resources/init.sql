@@ -67,3 +67,15 @@ insert into server(country, country_in_chinese,  city, city_in_chinese,  domain,
 insert into server(country, country_in_chinese,  city, city_in_chinese,  domain, port, password, status, current_owner) values('MALAYSIA', '马来西亚',  'KUALA LUMPUR', '吉隆坡',  '47.254.202.96', '8010', 'pwd8010', 'AVAILABLE', 0);
 insert into server(country, country_in_chinese,  city, city_in_chinese,  domain, port, password, status, current_owner) values('SINGAPORE', '新加坡', 'SINGAPORE', '新加坡', '47.88.225.133', '8001', 'pwd8001', 'AVAILABLE', 0);
 insert into server(country, country_in_chinese,  city, city_in_chinese,  domain, port, password, status, current_owner) values('SINGAPORE', '新加坡', 'SINGAPORE', '新加坡', '47.88.225.133', '8002', 'pwd8002', 'AVAILABLE', 0);
+
+
+CREATE TABLE `balance` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) NOT NULL,
+  `balance` double NOT NULL,
+  `create_time` varchar(30) NOT NULL,
+  `update_time` varchar(30) DEFAULT NULL,
+  PRIMARY KEY(`id`),
+  UNIQUE KEY `user_unique_key` (`user_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+

@@ -45,7 +45,7 @@ public interface UserApi {
 	 * 重新发送激活邮件
 	 * */
 	@ApiOperation(value = "重新发送激活邮件", tags = "user")
-	@RequestMapping(path = "/resend/{email:.+}", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+	@RequestMapping(path = "/resend/{email:.+}", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	ResponseMessageDto resendActiveEmail(@PathVariable("email") String email);
 
 	/**
@@ -66,6 +66,13 @@ public interface UserApi {
 	 * 退出登录
 	 * */
 	@ApiOperation(value = "用户注销", tags = "user")
-	@RequestMapping(path = "/logout", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+	@RequestMapping(path = "/logout", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	ResponseMessageDto logout();
+
+	/**
+	 * 查看邀请码
+	 * */
+	@ApiOperation(value = "查看邀请码", tags = "user")
+	@RequestMapping(path = "/inviteCode", method = RequestMethod.GET)
+	int inviteCode();
 }

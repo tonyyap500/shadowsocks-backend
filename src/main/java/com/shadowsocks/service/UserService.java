@@ -34,6 +34,11 @@ public interface UserService {
 	boolean active(String username);
 
 	/**
+	 * 根据激活码查询用户
+	 * */
+	Optional<User> findUserByActiveCode(String activeCode);
+
+	/**
 	 * 登录
 	 * */
 	Optional<User> login(LoginDto loginDto);

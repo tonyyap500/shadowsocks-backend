@@ -10,12 +10,9 @@ import com.shadowsocks.service.ServerService;
 import com.shadowsocks.utils.SessionKeyUtils;
 import com.shadowsocks.web.BaseController;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.manager.util.SessionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
@@ -24,16 +21,10 @@ import java.util.Optional;
 @Slf4j
 public class ServerApiController extends BaseController implements ServerApi{
 
-    //TODO 验证用户余额信息
-    private HttpServletRequest request;
-    private HttpServletResponse response;
     private HttpSession session;
     private ServerService serverService;
 
-    public ServerApiController(HttpServletRequest request, HttpServletResponse response,
-                               HttpSession session, ServerService serverService) {
-        this.request = request;
-        this.response = response;
+    public ServerApiController(HttpSession session, ServerService serverService) {
         this.session = session;
         this.serverService = serverService;
     }
@@ -48,22 +39,33 @@ public class ServerApiController extends BaseController implements ServerApi{
         return serverService.findCityList(country);
     }
 
-    @Override
-    public ServerDto applyServer(@PathVariable("id") int id) {
-        User user = (User) session.getAttribute(SessionKeyUtils.getKeyForUser());
-        boolean result = serverService.applyServer(id, user.getId());
+    private Optional<ServerDto> applyServer(int userId, int serverId) {
+        boolean result = serverService.applyServer(serverId, userId);
         if(!result) {
-            return ServerDto.builder().build();
+            return Optional.empty();
         }
-        Optional<Server> serverOptional = serverService.findServerById(id);
+        Optional<Server> serverOptional = serverService.findServerById(serverId);
         if(serverOptional.isPresent()) {
             Server server = serverOptional.get();
-            return ServerDto.builder()
+            ServerDto serverDto = ServerDto.builder()
                     .domain(server.getDomain())
                     .port(server.getPort())
                     .password(server.getPassword())
                     .build();
+            return Optional.ofNullable(serverDto);
         }
-        return ServerDto.builder().build();
+        return Optional.empty();
+    }
+
+    @Override
+    public ServerDto purchaseServer(@PathVariable("id") int serverId) {
+        User user = (User) session.getAttribute(SessionKeyUtils.getKeyForUser());
+        Optional<ServerDto> serverDtoOptional = applyServer(user.getId(), serverId);
+        serverDtoOptional.ifPresent(serverDto -> {
+            //TODO 扣除余额
+            //TODO 生成订单
+            //TODO 发送邮件
+        });
+        return serverDtoOptional.orElseGet(() -> ServerDto.builder().build());
     }
 }

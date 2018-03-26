@@ -27,7 +27,7 @@ public interface UserDao {
 	@Select("select active_code from " + TABLE_NAME + " where email=#{email}")
 	String findActiveCodeByEmail(@Param("email") String email);
 
-	@Update("update " + TABLE_NAME + " set active_status='ACTIVE' where active_code=#{activeCode}")
+	@Update("update " + TABLE_NAME + " set active_status='ACTIVE' where active_status='NON_ACTIVE' and active_code=#{activeCode}")
 	int active(@Param("activeCode") String activeCode);
 
 	@Select("select * from " + TABLE_NAME + " where (username=#{username} or email=#{username}) and password=#{password} and active_status='ACTIVE'")
@@ -49,6 +49,10 @@ public interface UserDao {
 			}
 	)
     User login(@Param("username") String username, @Param("password") String password);
+
+	@Select("select * from " + TABLE_NAME + " where active_code=#{activeCode}")
+	@ResultMap(BASE_RESULT)
+	User findUserByActiveCode(@Param("activeCode") String activeCode);
 
 	@Update("update " + TABLE_NAME + " set login_times=#{loginTimes}, last_login_ip=#{lastLoginIp}, last_login_time=#{lastLoginTime} where id=#{id}")
     void updateUserById(@Param("id") int id, @Param("loginTimes") int loginTimes, @Param("lastLoginIp") String lastLoginIp, @Param("lastLoginTime") String lastLoginTime);
