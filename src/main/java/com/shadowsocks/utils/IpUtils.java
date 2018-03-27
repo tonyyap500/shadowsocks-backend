@@ -25,7 +25,6 @@ public class IpUtils {
                 ip = request.getHeader(source);
             }
             if (!isIpInvalid(ip)) {
-                log.info("get IP {} from {}", ip, source);
                 ip = ip.split(",")[0];
                 break;
             }

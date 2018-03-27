@@ -30,15 +30,15 @@ public class PayServiceImpl implements PayService{
     }
 
     @Override
-    public boolean updateStatus(int id) {
+    public boolean updateStatus(String transactionId) {
         String time = LocalDateTime.now().format(formatter);
-        int result = payDao.updateStatus(id, time);
+        int result = payDao.updateStatus(transactionId, time);
         return result == 1;
     }
 
     @Override
-    public Optional<PayOrder> findOrderById(int id) {
-        PayOrder payOrder = payDao.findOrderById(id);
+    public Optional<PayOrder> findOrderByTransactionId(String transactionId) {
+        PayOrder payOrder = payDao.findOrderByTransactionId(transactionId);
         return Optional.ofNullable(payOrder);
     }
 }

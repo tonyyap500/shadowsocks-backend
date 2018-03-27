@@ -83,6 +83,7 @@ CREATE TABLE `balance` (
 CREATE TABLE `payment_order` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) NOT NULL,
+  `transaction_id` varchar(40) NOT NULL,
   `amount` double NOT NULL,
   `channel` varchar(30) NOT NULL,
   `status` varchar(10) NOT NULL,

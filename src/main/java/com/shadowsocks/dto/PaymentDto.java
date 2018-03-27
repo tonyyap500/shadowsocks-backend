@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PaymentDto {
     private int userId;
+    private String transactionId;
     private double amount;
     private String channel;
     private String status;

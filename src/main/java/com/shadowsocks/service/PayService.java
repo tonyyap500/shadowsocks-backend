@@ -15,10 +15,10 @@ public interface PayService {
     /**
      * 更新订单状态
      * */
-    boolean updateStatus(int id);
+    boolean updateStatus(String id);
 
     /**
-     * 根据订单号查询用户id
+     * 根据订单号查询订单
      * */
-    Optional<PayOrder> findOrderById(int id);
+    Optional<PayOrder> findOrderByTransactionId(String transactionId);
 }

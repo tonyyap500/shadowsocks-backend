@@ -6,6 +6,7 @@ import lombok.Data;
 public class PayOrder {
     private int id;
     private int userId;
+    private String transactionId;
     private double amount;
     private String channel;
     private String status;
