@@ -103,7 +103,7 @@ public class UserApiController extends BaseController implements UserApi {
 
     private User buildUserFromRegisterDto(RegisterDto registerDto) {
         String time = LocalDateTime.now().format(formatter);
-        String activeCode = RandomStringUtils.generateRandomString();
+        String activeCode = RandomStringUtils.generateRandomStringWithMD5();
         return User.builder()
                 .username(registerDto.getUsername().toLowerCase())
                 .email(registerDto.getEmail())

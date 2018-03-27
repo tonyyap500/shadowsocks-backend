@@ -29,4 +29,9 @@ public interface ServerService {
      * 根据id查询服务器信息
      * */
     Optional<Server> findServerById(int id);
+
+    /**
+     * 增加服务器
+     * */
+    boolean addNewServer(Server server);
 }

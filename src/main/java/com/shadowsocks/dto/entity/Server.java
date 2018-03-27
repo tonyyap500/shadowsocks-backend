@@ -18,6 +18,6 @@ public class Server {
     private String domain;
     private String port;
     private String password;
-    private String currentOwner;
+    private int currentOwner;
     private String updateTime;
 }

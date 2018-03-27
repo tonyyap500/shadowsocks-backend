@@ -31,7 +31,7 @@ public interface ServerDao {
     )
     Server findById(@Param("id") int id);
 
-    @Select("select distinct country, country_in_chinese from " + TABLE_NAME + " where status='AVAILABLE'")
+    @Select("select distinct country, country_in_chinese from " + TABLE_NAME + " where status='AVAILABLE' and current_owner=0")
     @Results(
             id = "findCountryList",
             value = {
@@ -41,7 +41,7 @@ public interface ServerDao {
     )
     List<CountryDto> findCountryList();
 
-    @Select("select id, city, city_in_chinese from " + TABLE_NAME + " where country=#{country} and status='AVAILABLE' limit 5")
+    @Select("select id, city, city_in_chinese from " + TABLE_NAME + " where country=#{country} and status='AVAILABLE' and current_owner=0 limit 5")
     @Results(
             id = "findCityList",
             value = {
@@ -55,4 +55,8 @@ public interface ServerDao {
     @Update("update " + TABLE_NAME + " set status='NONAVAILABLE', current_owner=#{userId}, update_time=#{updateTime} " +
             "where id=#{id} and status='AVAILABLE'")
     int applyServer(@Param("id") int id, @Param("userId") int userId, @Param("updateTime") String updateTime);
+
+    @Insert("insert into " + TABLE_NAME + "(country, country_in_chinese, city, city_in_chinese, domain, port, password, status, current_owner) " +
+            "values(#{country}, #{countryInChinese}, #{city}, #{cityInChinese}, #{domain}, #{port}, #{password}, 'AVAILABLE', #{currentOwner})")
+    int addNewServer(Server server);
 }

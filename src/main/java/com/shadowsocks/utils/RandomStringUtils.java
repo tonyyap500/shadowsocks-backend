@@ -10,10 +10,19 @@ public class RandomStringUtils {
     private RandomStringUtils() {
     }
 
-    public static String generateRandomString() {
-        List<Integer> list1 = IntStream.generate(() -> new Random().nextInt(125)).filter(v -> (v >= 65 && v <= 90) || (v >= 97 && v <= 122)).limit(16).boxed().collect(Collectors.toList());
+    private static String generateRandomString(int digital) {
+        List<Integer> list1 = IntStream.generate(() -> new Random().nextInt(125)).filter(v -> (v >= 65 && v <= 90) || (v >= 97 && v <= 122)).limit(digital).boxed().collect(Collectors.toList());
         StringBuilder builder = new StringBuilder();
         list1.forEach(v -> builder.append((char)v.intValue()));
-        return MD5Utils.encode(builder.toString());
+        return builder.toString();
+    }
+
+    public static String generateRandomStringWithMD5() {
+        String randomString = generateRandomString(32);
+        return MD5Utils.encode(randomString);
+    }
+
+    public static String generatePassword() {
+        return generateRandomString(16);
     }
 }

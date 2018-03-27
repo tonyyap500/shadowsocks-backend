@@ -39,7 +39,7 @@ public class PayApiController extends BaseController implements PayApi{
     @Override
     public ThirdPartyPayDto reload(@PathVariable("channel") PaymentEnum channel, @PathVariable("amount") double amount) {
         User user = (User) session.getAttribute(SessionKeyUtils.getKeyForUser());
-        String transactionId = RandomStringUtils.generateRandomString();
+        String transactionId = RandomStringUtils.generateRandomStringWithMD5();
         PaymentDto paymentDto = PaymentDto.builder()
                 .transactionId(transactionId)
                 .userId(user.getId())

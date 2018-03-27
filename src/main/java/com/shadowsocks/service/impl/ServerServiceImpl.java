@@ -44,4 +44,10 @@ public class ServerServiceImpl implements ServerService{
         Server server = serverDao.findById(id);
         return Optional.ofNullable(server);
     }
+
+    @Override
+    public boolean addNewServer(Server server) {
+        int result = serverDao.addNewServer(server);
+        return result == 1;
+    }
 }
