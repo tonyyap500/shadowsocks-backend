@@ -54,22 +54,6 @@ CREATE TABLE `server` (
   PRIMARY KEY(`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of server
--- ----------------------------
-insert into server(country, country_in_chinese,  city, city_in_chinese,  domain, port, password, status, current_owner) values('MALAYSIA', '马来西亚',  'KUALA LUMPUR', '吉隆坡',  '47.254.202.96', '8001', 'pwd8001', 'AVAILABLE', 0);
-insert into server(country, country_in_chinese,  city, city_in_chinese,  domain, port, password, status, current_owner) values('MALAYSIA', '马来西亚',  'KUALA LUMPUR', '吉隆坡',  '47.254.202.96', '8002', 'pwd8002', 'AVAILABLE', 0);
-insert into server(country, country_in_chinese,  city, city_in_chinese,  domain, port, password, status, current_owner) values('MALAYSIA', '马来西亚',  'KUALA LUMPUR', '吉隆坡',  '47.254.202.96', '8003', 'pwd8003', 'AVAILABLE', 0);
-insert into server(country, country_in_chinese,  city, city_in_chinese,  domain, port, password, status, current_owner) values('MALAYSIA', '马来西亚',  'KUALA LUMPUR', '吉隆坡',  '47.254.202.96', '8004', 'pwd8004', 'AVAILABLE', 0);
-insert into server(country, country_in_chinese,  city, city_in_chinese,  domain, port, password, status, current_owner) values('MALAYSIA', '马来西亚',  'KUALA LUMPUR', '吉隆坡',  '47.254.202.96', '8005', 'pwd8005', 'AVAILABLE', 0);
-insert into server(country, country_in_chinese,  city, city_in_chinese,  domain, port, password, status, current_owner) values('MALAYSIA', '马来西亚',  'KUALA LUMPUR', '吉隆坡',  '47.254.202.96', '8006', 'pwd8006', 'AVAILABLE', 0);
-insert into server(country, country_in_chinese,  city, city_in_chinese,  domain, port, password, status, current_owner) values('MALAYSIA', '马来西亚',  'KUALA LUMPUR', '吉隆坡',  '47.254.202.96', '8007', 'pwd8007', 'AVAILABLE', 0);
-insert into server(country, country_in_chinese,  city, city_in_chinese,  domain, port, password, status, current_owner) values('MALAYSIA', '马来西亚',  'KUALA LUMPUR', '吉隆坡',  '47.254.202.96', '8008', 'pwd8008', 'AVAILABLE', 0);
-insert into server(country, country_in_chinese,  city, city_in_chinese,  domain, port, password, status, current_owner) values('MALAYSIA', '马来西亚',  'KUALA LUMPUR', '吉隆坡',  '47.254.202.96', '8009', 'pwd8009', 'AVAILABLE', 0);
-insert into server(country, country_in_chinese,  city, city_in_chinese,  domain, port, password, status, current_owner) values('MALAYSIA', '马来西亚',  'KUALA LUMPUR', '吉隆坡',  '47.254.202.96', '8010', 'pwd8010', 'AVAILABLE', 0);
-insert into server(country, country_in_chinese,  city, city_in_chinese,  domain, port, password, status, current_owner) values('SINGAPORE', '新加坡', 'SINGAPORE', '新加坡', '47.88.225.133', '8001', 'pwd8001', 'AVAILABLE', 0);
-insert into server(country, country_in_chinese,  city, city_in_chinese,  domain, port, password, status, current_owner) values('SINGAPORE', '新加坡', 'SINGAPORE', '新加坡', '47.88.225.133', '8002', 'pwd8002', 'AVAILABLE', 0);
-
 
 CREATE TABLE `balance` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
