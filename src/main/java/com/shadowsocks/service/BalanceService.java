@@ -17,6 +17,11 @@ public interface BalanceService {
     boolean addBalanceByUserId(int userId, double amount);
 
     /**
+     * 根据用户id扣除余额
+     * */
+    boolean minusBalanceByUserId(int userId, double amount);
+
+    /**
      * 根据用户ID查询余额信息
      * */
     Optional<Balance> findBalanceByUserId(int userId);

@@ -31,7 +31,15 @@ public interface ServerDao {
     )
     Server findById(@Param("id") int id);
 
-    @Select("select distinct country, country_in_chinese from " + TABLE_NAME + " where status='AVAILABLE' and current_owner=0")
+    @Select("select * from " + TABLE_NAME + " where domain=#{domain} and status='AVAILABLE' and current_owner=0")
+    @ResultMap(BASE_RESULT)
+    List<Server> findServersByDomain(@Param("domain") String domain);
+
+    @Select("select * from " + TABLE_NAME + " where status='NONAVAILABLE' limit #{start}, #{pageSize}")
+    @ResultMap(BASE_RESULT)
+    List<Server> findServers(@Param("start") int start, @Param("pageSize") int pageSize);
+
+    @Select("select distinct country, country_in_chinese from " + TABLE_NAME + " where status='AVAILABLE' and current_owner=0 and update_time<=date_add(now(), interval -24 hour)")
     @Results(
             id = "findCountryList",
             value = {
@@ -41,7 +49,7 @@ public interface ServerDao {
     )
     List<CountryDto> findCountryList();
 
-    @Select("select id, city, city_in_chinese from " + TABLE_NAME + " where country=#{country} and status='AVAILABLE' and current_owner=0 limit 5")
+    @Select("select id, city, city_in_chinese from " + TABLE_NAME + " where country=#{country} and status='AVAILABLE' and current_owner=0 and update_time<=date_add(now(), interval -24 hour)limit 5")
     @Results(
             id = "findCityList",
             value = {
@@ -55,6 +63,9 @@ public interface ServerDao {
     @Update("update " + TABLE_NAME + " set status='NONAVAILABLE', current_owner=#{userId}, update_time=#{updateTime} " +
             "where id=#{id} and status='AVAILABLE'")
     int applyServer(@Param("id") int id, @Param("userId") int userId, @Param("updateTime") String updateTime);
+
+    @Update("update " + TABLE_NAME + " set password=#{password}, status='AVAILABLE', current_owner=0, update_time=#{updateTime} where current_owner=#{userId}")
+    int releaseServer(@Param("userId") int userId, @Param("password") String password, @Param("updateTime") String updateTime);
 
     @Insert("insert into " + TABLE_NAME + "(country, country_in_chinese, city, city_in_chinese, domain, port, password, status, current_owner) " +
             "values(#{country}, #{countryInChinese}, #{city}, #{cityInChinese}, #{domain}, #{port}, #{password}, 'AVAILABLE', #{currentOwner})")

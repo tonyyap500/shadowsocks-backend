@@ -26,7 +26,7 @@ import java.util.Optional;
 
 @RestController
 @Slf4j
-public class ServerApiController extends BaseController implements ServerApi{
+public class ServerApiController extends BaseController implements ServerApi {
 
     private HttpSession session;
     private ServerService serverService;

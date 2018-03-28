@@ -37,4 +37,11 @@ public class BalanceServiceImpl implements BalanceService {
         Balance balance = balanceDao.findBalanceByUserId(userId);
         return Optional.ofNullable(balance);
     }
+
+    @Override
+    public boolean minusBalanceByUserId(int userId, double amount) {
+        String updateTime = LocalDateTime.now().format(formatter);
+        int result = balanceDao.minusBalanceByUserId(userId, amount, updateTime);
+        return result == 1;
+    }
 }

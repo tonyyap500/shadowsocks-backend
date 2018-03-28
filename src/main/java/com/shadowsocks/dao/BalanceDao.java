@@ -3,6 +3,7 @@ package com.shadowsocks.dao;
 import com.shadowsocks.dto.entity.Balance;
 import org.apache.ibatis.annotations.*;
 
+
 @Mapper
 public interface BalanceDao {
 
@@ -27,4 +28,7 @@ public interface BalanceDao {
             }
     )
     Balance findBalanceByUserId(@Param("userId") int userId);
+
+    @Update("update " + TABLE_NAME + " set balance=(case when balance-#{transactionAmount}>0 then balance-#{transactionAmount} else 0 end), update_time=#{updateTime} where user_id=#{userId}")
+    int minusBalanceByUserId(@Param("userId") int userId, @Param("transactionAmount") double transactionAmount, @Param("updateTime") String updateTime);
 }

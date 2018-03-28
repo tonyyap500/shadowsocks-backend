@@ -24,6 +24,10 @@ public interface ServerService {
      * */
     boolean applyServer(int id, int userId);
 
+    /**
+     * 释放服务器
+     * */
+    boolean releaseServer(int userId, String newPassword);
 
     /**
      * 根据id查询服务器信息
@@ -31,7 +35,17 @@ public interface ServerService {
     Optional<Server> findServerById(int id);
 
     /**
+     * 分页查询服务器使用
+     * */
+    List<Server> findServers(int start, int pageSize);
+
+    /**
      * 增加服务器
      * */
     boolean addNewServer(Server server);
+
+    /**
+     * 根据域名查询服务器
+     * */
+    List<Server> findServersByDomain(String domain);
 }
