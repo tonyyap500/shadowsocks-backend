@@ -65,7 +65,7 @@ public class PayApiController extends BaseController implements PayApi{
             Optional<PayOrder> payOrderOptional = payService.findOrderByTransactionId(transactionId);
             payOrderOptional.ifPresent(payOrder -> {
                 boolean balanceUpdate = balanceService.addBalanceByUserId(payOrder.getUserId(), payOrder.getAmount());
-                if(balanceUpdate) log.info("用户 {} 余额更新成功，余额变动 {} 元", payOrder.getUserId(), payOrder.getAmount());
+                if(balanceUpdate) log.info("用户 [userId={}] 余额更新成功，余额变动 {} 元", payOrder.getUserId(), payOrder.getAmount());
             });
             return true;
         }

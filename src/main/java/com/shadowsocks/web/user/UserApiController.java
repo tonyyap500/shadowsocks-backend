@@ -181,7 +181,7 @@ public class UserApiController extends BaseController implements UserApi {
                     int inviter = user.getInviter();
                     if(inviter != 0) {
                         boolean addBalanceResult = balanceService.addBalanceByUserId(inviter, 3.0);
-                        if(addBalanceResult) log.info("为邀请者 {} 增加余额成功", inviter);
+                        if(addBalanceResult) log.info("为邀请者 [userId={}] 增加余额成功", inviter);
                     }
                     return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("激活成功").build();
                 }

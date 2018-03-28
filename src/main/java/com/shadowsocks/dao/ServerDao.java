@@ -31,7 +31,7 @@ public interface ServerDao {
     )
     Server findById(@Param("id") int id);
 
-    @Select("select * from " + TABLE_NAME + " where domain=#{domain} and status='AVAILABLE' and current_owner=0")
+    @Select("select * from " + TABLE_NAME + " where domain=#{domain}")
     @ResultMap(BASE_RESULT)
     List<Server> findServersByDomain(@Param("domain") String domain);
 
@@ -67,7 +67,7 @@ public interface ServerDao {
     @Update("update " + TABLE_NAME + " set password=#{password}, status='AVAILABLE', current_owner=0, update_time=#{updateTime} where current_owner=#{userId}")
     int releaseServer(@Param("userId") int userId, @Param("password") String password, @Param("updateTime") String updateTime);
 
-    @Insert("insert into " + TABLE_NAME + "(country, country_in_chinese, city, city_in_chinese, domain, port, password, status, current_owner) " +
-            "values(#{country}, #{countryInChinese}, #{city}, #{cityInChinese}, #{domain}, #{port}, #{password}, 'AVAILABLE', #{currentOwner})")
+    @Insert("insert into " + TABLE_NAME + "(country, country_in_chinese, city, city_in_chinese, domain, port, password, status, current_owner, update_time) " +
+            "values(#{country}, #{countryInChinese}, #{city}, #{cityInChinese}, #{domain}, #{port}, #{password}, 'AVAILABLE', #{currentOwner}, date_add(now(), interval -24 hour))")
     int addNewServer(Server server);
 }
