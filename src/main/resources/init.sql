@@ -1,3 +1,5 @@
+CREATE DATABASE shadowsocks CHARACTER SET utf8 COLLATE utf8_general_ci;
+
 CREATE TABLE `user` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `username` varchar(30) DEFAULT NULL,

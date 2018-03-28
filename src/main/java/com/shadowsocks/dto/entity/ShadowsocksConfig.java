@@ -20,7 +20,7 @@ public class ShadowsocksConfig {
     @SerializedName("local_port")
     private int localPort;
 
-    @SerializedName("port_passport")
+    @SerializedName("port_password")
     private String portAndPassword;
 
     private int timeout;
