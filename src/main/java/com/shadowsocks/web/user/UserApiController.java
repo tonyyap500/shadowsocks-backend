@@ -30,6 +30,7 @@ import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -84,7 +85,7 @@ public class UserApiController extends BaseController implements UserApi {
 
 
     @Override
-    public boolean isUsernameTaken(@PathVariable("username:.+") String username) {
+    public boolean isUsernameTaken(@PathVariable("username") String username) {
         boolean result = userService.isUsernameTaken(username.toLowerCase());
         if(result) {
             log.info("用户名 {} 已经被占用", username);
@@ -104,11 +105,10 @@ public class UserApiController extends BaseController implements UserApi {
     private User buildUserFromRegisterDto(RegisterDto registerDto) {
         String time = LocalDateTime.now().format(formatter);
         String activeCode = RandomStringUtils.generateRandomStringWithMD5();
-        return User.builder()
+        User user = User.builder()
                 .username(registerDto.getUsername().toLowerCase())
                 .email(registerDto.getEmail())
                 .password(registerDto.getPassword())
-                .inviter(registerDto.getInviter())
                 .registerIp(getCurrentIpAddress(request))
                 .registerTime(time)
                 .loginTimes(0)
@@ -117,6 +117,10 @@ public class UserApiController extends BaseController implements UserApi {
                 .activeStatus(ActiveStatusEnum.NON_ACTIVE.name())
                 .activeCode(activeCode)
                 .build();
+        if(Objects.nonNull(registerDto.getInviter())) {
+            user.setInviter(registerDto.getInviter());
+        }
+        return user;
     }
 
     private void sendActiveEmail(String email, String activeCode) {
