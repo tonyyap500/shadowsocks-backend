@@ -78,4 +78,9 @@ public class ServerServiceImpl implements ServerService{
         }
         return Lists.newArrayList();
     }
+
+    @Override
+    public List<Server> findMyServers(int userId) {
+        return serverDao.findMyServers(userId);
+    }
 }

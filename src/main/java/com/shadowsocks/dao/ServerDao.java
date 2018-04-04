@@ -31,6 +31,10 @@ public interface ServerDao {
     )
     Server findById(@Param("id") int id);
 
+    @Select("select * from " + TABLE_NAME + " where current_owner=#{userId}")
+    @ResultMap(BASE_RESULT)
+    List<Server> findMyServers(@Param("userId") int userId);
+
     @Select("select * from " + TABLE_NAME + " where domain=#{domain}")
     @ResultMap(BASE_RESULT)
     List<Server> findServersByDomain(@Param("domain") String domain);

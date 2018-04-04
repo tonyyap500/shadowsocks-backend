@@ -4,6 +4,7 @@ package com.shadowsocks.web.server;
 import com.shadowsocks.dto.ResponseMessageDto;
 import com.shadowsocks.dto.response.CityDto;
 import com.shadowsocks.dto.response.CountryDto;
+import com.shadowsocks.dto.response.ServerDto;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,13 @@ public interface ServerApi {
     @RequestMapping(path = "/cityList/{country}", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     List<CityDto> getCityList(@PathVariable("country") String country);
 
+    @ApiOperation(value = "我的节点", tags = "server")
+    @RequestMapping(path = "/myServers", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+    List<ServerDto> findMyServers();
+
     @ApiOperation(value = "购买服务器", tags = "server")
     @RequestMapping(path = "/purchase/{id}", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     ResponseMessageDto purchaseServer(@PathVariable("id") String id);
+
+
 }

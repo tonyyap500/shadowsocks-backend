@@ -48,4 +48,9 @@ public interface ServerService {
      * 根据域名查询服务器
      * */
     List<Server> findServersByDomain(String domain);
+
+    /**
+     * 查看我的节点
+     * */
+    List<Server> findMyServers(int userId);
 }

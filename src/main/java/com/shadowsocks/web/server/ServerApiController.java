@@ -23,10 +23,13 @@ import javax.servlet.http.HttpSession;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
 public class ServerApiController extends BaseController implements ServerApi {
+
+    private static final String ENCRYPTION = "aes-256-cfb";
 
     private HttpSession session;
     private ServerService serverService;
@@ -50,6 +53,22 @@ public class ServerApiController extends BaseController implements ServerApi {
         return serverService.findCityList(country);
     }
 
+    @Override
+    public List<ServerDto> findMyServers() {
+        User user = (User) session.getAttribute(SessionKeyUtils.getKeyForUser());
+        List<Server> serverList = serverService.findMyServers(user.getId());
+        return serverList.stream().map(server ->
+            ServerDto.builder()
+                .domain(server.getDomain())
+                .port(server.getPort())
+                .password(server.getPassword())
+                .encryption(ENCRYPTION)
+                .country(server.getCityInChinese())
+                .city(server.getCityInChinese())
+                .build()
+        ).collect(Collectors.toList());
+    }
+
     private Optional<ServerDto> applyServer(int userId, int serverId) {
         boolean result = serverService.applyServer(serverId, userId);
         if(!result) {
@@ -62,7 +81,7 @@ public class ServerApiController extends BaseController implements ServerApi {
                     .domain(server.getDomain())
                     .port(server.getPort())
                     .password(server.getPassword())
-                    .encryption("aes-256-cfb")
+                    .encryption(ENCRYPTION)
                     .country(server.getCountryInChinese())
                     .city(server.getCityInChinese())
                     .build();
