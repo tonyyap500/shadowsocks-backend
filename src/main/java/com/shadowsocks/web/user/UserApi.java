@@ -3,6 +3,7 @@ package com.shadowsocks.web.user;
 import com.shadowsocks.dto.ResponseMessageDto;
 import com.shadowsocks.dto.request.LoginDto;
 import com.shadowsocks.dto.request.RegisterDto;
+import com.shadowsocks.dto.response.UserCenter;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -75,4 +76,13 @@ public interface UserApi {
 	@ApiOperation(value = "查看邀请码", tags = "user")
 	@RequestMapping(path = "/inviteCode", method = RequestMethod.GET)
 	int inviteCode();
+
+	//TODO 做一个邮件邀请功能
+
+    /**
+     * 个人中心
+     * */
+    @ApiOperation(value = "个人中心", tags = "user")
+    @RequestMapping(path = "/userCenter", method = RequestMethod.GET)
+    UserCenter userCenter();
 }

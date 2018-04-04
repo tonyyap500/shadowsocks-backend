@@ -2,6 +2,7 @@ package com.shadowsocks.config;
 
 import com.shadowsocks.dto.entity.User;
 import com.shadowsocks.utils.SessionKeyUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -17,7 +18,8 @@ public class LoginIntercepter implements HandlerInterceptor {
 		if(Objects.nonNull(user)) {
 			return true;
 		}
-		httpServletResponse.getWriter().println("请先登录");
+		httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+		httpServletResponse.getWriter().println("Please login!");
 		return false;
 	}
 

@@ -2,6 +2,7 @@ package com.shadowsocks.web.user;
 
 import com.google.common.collect.Lists;
 import com.shadowsocks.config.GlobalConfig;
+import com.shadowsocks.dto.entity.Balance;
 import com.shadowsocks.dto.entity.EmailConfig;
 import com.shadowsocks.dto.entity.EmailObject;
 import com.shadowsocks.dto.entity.User;
@@ -9,6 +10,7 @@ import com.shadowsocks.dto.enums.ActiveStatusEnum;
 import com.shadowsocks.dto.enums.ResultEnum;
 import com.shadowsocks.dto.request.LoginDto;
 import com.shadowsocks.dto.request.RegisterDto;
+import com.shadowsocks.dto.response.UserCenter;
 import com.shadowsocks.service.BalanceService;
 import com.shadowsocks.service.EmailService;
 import com.shadowsocks.utils.*;
@@ -222,5 +224,20 @@ public class UserApiController extends BaseController implements UserApi {
     public int inviteCode() {
         User user = (User) session.getAttribute(SessionKeyUtils.getKeyForUser());
         return user.getId();
+    }
+
+    @Override
+    public UserCenter userCenter() {
+        User user = (User) session.getAttribute(SessionKeyUtils.getKeyForUser());
+        Optional<Balance> balanceOptional = balanceService.findBalanceByUserId(user.getId());
+        UserCenter userCenter = UserCenter.builder()
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .loginTimes(user.getLoginTimes())
+                .lastLoginTime(user.getLastLoginTime())
+                .lastLoginIp(user.getLastLoginIp())
+                .build();
+        balanceOptional.ifPresent(balance -> userCenter.setBalance(balance.getCurrentBalance()));
+        return userCenter;
     }
 }
