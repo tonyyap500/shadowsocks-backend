@@ -69,9 +69,8 @@ public class UserApiController extends BaseController implements UserApi {
 
 		String ipAddress = getCurrentIpAddress(request);
 		String userAgent = request.getHeader("User-Agent");
-		log.info("请求验证码，来源IP {}, User-Agent {}", ipAddress, userAgent);
-		String verifyCode = CaptchaUtils.generateVerifyCode(4);
-		log.info("生成验证码 {}", verifyCode);
+        String verifyCode = CaptchaUtils.generateVerifyCode(4);
+        log.info("生成验证码 {} ，来源IP {}, User-Agent {}", verifyCode, ipAddress, userAgent);
 		session.setMaxInactiveInterval(300);
 		session.removeAttribute(SessionKeyUtils.getKeyForCaptcha());
 		session.setAttribute(SessionKeyUtils.getKeyForCaptcha(), verifyCode.toLowerCase());
