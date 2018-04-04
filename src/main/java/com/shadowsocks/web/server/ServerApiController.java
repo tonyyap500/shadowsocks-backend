@@ -63,7 +63,7 @@ public class ServerApiController extends BaseController implements ServerApi {
                 .port(server.getPort())
                 .password(server.getPassword())
                 .encryption(ENCRYPTION)
-                .country(server.getCityInChinese())
+                .country(server.getCountryInChinese())
                 .city(server.getCityInChinese())
                 .build()
         ).collect(Collectors.toList());
