@@ -6,9 +6,11 @@ import com.shadowsocks.dto.entity.PayOrder;
 import com.shadowsocks.dto.entity.User;
 import com.shadowsocks.dto.enums.PaymentEnum;
 import com.shadowsocks.dto.enums.ResultEnum;
+import com.shadowsocks.dto.response.PaymentOrderDto;
 import com.shadowsocks.dto.response.ThirdPartyPayDto;
 import com.shadowsocks.service.BalanceService;
 import com.shadowsocks.service.PayService;
+import com.shadowsocks.utils.DecimalUtils;
 import com.shadowsocks.utils.RandomStringUtils;
 import com.shadowsocks.utils.SessionKeyUtils;
 import com.shadowsocks.web.BaseController;
@@ -17,7 +19,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -70,5 +74,22 @@ public class PayApiController extends BaseController implements PayApi{
             return true;
         }
         return false;
+    }
+
+    //TODO channel和status显示为中文
+    @Override
+    public List<PaymentOrderDto> findOrdersByUserId() {
+        User user = (User) session.getAttribute(SessionKeyUtils.getKeyForUser());
+        List<PayOrder> payOrderList = payService.findOrdersByUserId(user.getId());
+        return payOrderList.stream().map(payOrder ->
+            PaymentOrderDto.builder()
+                    .transactionId(payOrder.getTransactionId())
+                    .amount(DecimalUtils.halfRoundUp(payOrder.getAmount()))
+                    .channel(payOrder.getChannel())
+                    .status(payOrder.getStatus())
+                    .createTime(payOrder.getCreateTime())
+                    .updateTime(payOrder.getUpdateTime())
+                    .build()
+        ).collect(Collectors.toList());
     }
 }

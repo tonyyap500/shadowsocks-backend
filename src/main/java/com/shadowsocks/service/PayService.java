@@ -3,6 +3,7 @@ package com.shadowsocks.service;
 import com.shadowsocks.dto.PaymentDto;
 import com.shadowsocks.dto.entity.PayOrder;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface PayService {
@@ -21,4 +22,9 @@ public interface PayService {
      * 根据订单号查询订单
      * */
     Optional<PayOrder> findOrderByTransactionId(String transactionId);
+
+    /**
+     * 根据用户id查询充值订单
+     * */
+    List<PayOrder> findOrdersByUserId(int userId);
 }

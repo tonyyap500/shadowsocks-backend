@@ -237,7 +237,7 @@ public class UserApiController extends BaseController implements UserApi {
                 .lastLoginTime(user.getLastLoginTime())
                 .lastLoginIp(user.getLastLoginIp())
                 .build();
-        balanceOptional.ifPresent(balance -> userCenter.setBalance(balance.getCurrentBalance()));
+        balanceOptional.ifPresent(balance -> userCenter.setBalance(DecimalUtils.halfRoundUp(balance.getCurrentBalance())));
         return userCenter;
     }
 }

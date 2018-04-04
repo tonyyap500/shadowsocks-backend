@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,5 +41,10 @@ public class PayServiceImpl implements PayService{
     public Optional<PayOrder> findOrderByTransactionId(String transactionId) {
         PayOrder payOrder = payDao.findOrderByTransactionId(transactionId);
         return Optional.ofNullable(payOrder);
+    }
+
+    @Override
+    public List<PayOrder> findOrdersByUserId(int userId) {
+        return payDao.findOrdersByUserId(userId);
     }
 }

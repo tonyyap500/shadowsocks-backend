@@ -4,6 +4,8 @@ import com.shadowsocks.dto.PaymentDto;
 import com.shadowsocks.dto.entity.PayOrder;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 @Mapper
 public interface PayDao {
 
@@ -33,4 +35,8 @@ public interface PayDao {
             }
     )
     PayOrder findOrderByTransactionId(@Param("transactionId") String transactionId);
+
+    @Select("select * from " + TABLE_NAME + " where user_id=#{userId}")
+    @ResultMap(BASE_RESULT)
+    List<PayOrder> findOrdersByUserId(@Param("userId") int userId);
 }
