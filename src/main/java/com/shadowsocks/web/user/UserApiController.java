@@ -67,6 +67,9 @@ public class UserApiController extends BaseController implements UserApi {
 		response.setDateHeader("Expires", 0);
 		response.setContentType("image/jpeg");
 
+		String ipAddress = getCurrentIpAddress(request);
+		String userAgent = request.getHeader("User-Agent");
+		log.info("请求验证码，来源IP {}, User-Agent {}", ipAddress, userAgent);
 		String verifyCode = CaptchaUtils.generateVerifyCode(4);
 		log.info("生成验证码 {}", verifyCode);
 		session.setMaxInactiveInterval(300);
