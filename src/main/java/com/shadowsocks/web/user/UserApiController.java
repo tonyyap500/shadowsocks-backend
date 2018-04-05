@@ -230,7 +230,7 @@ public class UserApiController extends BaseController implements UserApi {
 
 
     @Override
-    public ResponseMessageDto inviteFriend(String email) {
+    public ResponseMessageDto inviteFriend(@PathVariable("email") String email) {
         User user = (User) session.getAttribute(SessionKeyUtils.getKeyForUser());
         int inviter = user.getId();
         String webURL = globalConfig.getWebUrl();
