@@ -10,4 +10,5 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("global")
 public class GlobalConfig {
     private String url;
+    private String webUrl;
 }

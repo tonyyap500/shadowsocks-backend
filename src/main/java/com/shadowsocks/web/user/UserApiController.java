@@ -220,10 +220,24 @@ public class UserApiController extends BaseController implements UserApi {
         return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("退出登录成功").build();
     }
 
+    private void sendInviteEmail(String username, String email, String message) {
+        log.info("用户 {} 邀请 {} 加入", username, email);
+        String subject = "您的好友" + username + "邀请您加入我们";
+        EmailObject emailObject = EmailObject.builder().toList(Lists.newArrayList(email)).subject(subject).content(message).build();
+        List<EmailConfig> emailConfigList = emailService.findEmailConfigs();
+        EmailUtils.sendEmailAsyc(emailConfigList, emailObject);
+    }
+
+
     @Override
-    public int inviteCode() {
+    public ResponseMessageDto inviteFriend(String email) {
         User user = (User) session.getAttribute(SessionKeyUtils.getKeyForUser());
-        return user.getId();
+        int inviter = user.getId();
+        String webURL = globalConfig.getWebUrl();
+        String inviteURL = webURL + "/register.html?inviter=" + inviter;
+        String message = "您的好友" + user.getUsername() + "邀请你科学上网, 请点击以下链接或复制后在浏览器中打开 " + inviteURL;
+        sendInviteEmail(user.getUsername(), email, message);
+        return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("邀请信息已发送到好友邮箱, 请前往邮箱查看或在浏览器中打开 " + inviteURL).build();
     }
 
     @Override

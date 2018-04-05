@@ -11,3 +11,4 @@ server:
 
 global:
   url: "http://localhost:8822"
+  webUrl: "http://localhost"

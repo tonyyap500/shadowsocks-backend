@@ -14,6 +14,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new LoginIntercepter())
 				.addPathPatterns("/user/logout")
+				.addPathPatterns("/user/active/**")
+				.addPathPatterns("/user/invite/**")
 				.addPathPatterns("/server/**")
 				.addPathPatterns("/pay/**")
 				.excludePathPatterns("/pay/callback");

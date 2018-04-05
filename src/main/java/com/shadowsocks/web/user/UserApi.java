@@ -73,11 +73,9 @@ public interface UserApi {
 	/**
 	 * 查看邀请码
 	 * */
-	@ApiOperation(value = "查看邀请码", tags = "user")
-	@RequestMapping(path = "/inviteCode", method = RequestMethod.GET)
-	int inviteCode();
-
-	//TODO 做一个邮件邀请功能
+	@ApiOperation(value = "邀请好友", tags = "user")
+	@RequestMapping(path = "/invite/{email:.+}", method = RequestMethod.GET)
+    ResponseMessageDto inviteFriend(@PathVariable("email") String email);
 
     /**
      * 个人中心
