@@ -53,7 +53,7 @@ public interface ServerDao {
     )
     List<CountryDto> findCountryList();
 
-    @Select("select id, city, city_in_chinese from " + TABLE_NAME + " where country=#{country} and status='AVAILABLE' and current_owner=0 and update_time<=date_add(now(), interval -24 hour)limit 5")
+    @Select("select id, city, city_in_chinese from " + TABLE_NAME + " where country=#{country} and status='AVAILABLE' and current_owner=0 and update_time<=date_add(now(), interval -24 hour) group by city")
     @Results(
             id = "findCityList",
             value = {
