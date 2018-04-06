@@ -51,8 +51,8 @@ public class ServerApiController extends BaseController implements ServerApi {
     }
 
     @Override
-    public List<ServerDto> findMyServers() {
-        User user = getUser();
+    public List<ServerDto> findMyServers(String token) {
+        User user = getUser(token);
         List<Server> serverList = serverService.findMyServers(user.getId());
         return serverList.stream().map(server ->
             ServerDto.builder()
@@ -88,8 +88,8 @@ public class ServerApiController extends BaseController implements ServerApi {
     }
 
     @Override
-    public ResponseMessageDto purchaseServer(@PathVariable("id") String id) {
-        User user = getUser();
+    public ResponseMessageDto purchaseServer(@PathVariable("id") String id, String token) {
+        User user = getUser(token);
         int serverId = Integer.parseInt(id);
         Optional<Balance> balanceOptional = balanceService.findBalanceByUserId(user.getId());
         if(balanceOptional.isPresent() && balanceOptional.get().getCurrentBalance() > 10.0) {

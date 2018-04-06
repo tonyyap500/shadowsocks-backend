@@ -25,11 +25,11 @@ public interface ServerApi {
 
     @ApiOperation(value = "我的节点", tags = "server")
     @RequestMapping(path = "/myServers", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
-    List<ServerDto> findMyServers();
+    List<ServerDto> findMyServers(String token);
 
     @ApiOperation(value = "购买服务器", tags = "server")
     @RequestMapping(path = "/purchase/{id}", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
-    ResponseMessageDto purchaseServer(@PathVariable("id") String id);
+    ResponseMessageDto purchaseServer(@PathVariable("id") String id, String token);
 
 
 }

@@ -12,13 +12,11 @@ import com.shadowsocks.service.BalanceService;
 import com.shadowsocks.service.PayService;
 import com.shadowsocks.utils.DecimalUtils;
 import com.shadowsocks.utils.RandomStringUtils;
-import com.shadowsocks.utils.SessionKeyUtils;
 import com.shadowsocks.web.BaseController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,8 +37,8 @@ public class PayApiController extends BaseController implements PayApi{
     }
 
     @Override
-    public ThirdPartyPayDto reload(@PathVariable("channel") PaymentEnum channel, @PathVariable("amount") double amount) {
-        User user = getUser();
+    public ThirdPartyPayDto reload(@PathVariable("channel") PaymentEnum channel, @PathVariable("amount") double amount, String token) {
+        User user = getUser(token);
         String transactionId = RandomStringUtils.generateRandomStringWithMD5();
         PaymentDto paymentDto = PaymentDto.builder()
                 .transactionId(transactionId)
@@ -76,8 +74,8 @@ public class PayApiController extends BaseController implements PayApi{
 
     //TODO channel和status显示为中文
     @Override
-    public List<PaymentOrderDto> findOrdersByUserId() {
-        User user = getUser();
+    public List<PaymentOrderDto> findOrdersByUserId(String token) {
+        User user = getUser(token);
         List<PayOrder> payOrderList = payService.findOrdersByUserId(user.getId());
         return payOrderList.stream().map(payOrder ->
             PaymentOrderDto.builder()

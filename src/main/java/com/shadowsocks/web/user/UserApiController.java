@@ -222,8 +222,8 @@ public class UserApiController extends BaseController implements UserApi {
     }
 
     @Override
-    public ResponseMessageDto inviteFriend(@PathVariable("email") String email) {
-        User user = getUser();
+    public ResponseMessageDto inviteFriend(@PathVariable("email") String email, String token) {
+        User user = getUser(token);
         int inviter = user.getId();
         String webURL = globalConfig.getWebUrl();
         String inviteURL = webURL + "/register.html?inviter=" + inviter;
@@ -233,8 +233,8 @@ public class UserApiController extends BaseController implements UserApi {
     }
 
     @Override
-    public UserCenter userCenter() {
-        User user = getUser();
+    public UserCenter userCenter(String token) {
+        User user = getUser(token);
         Optional<Balance> balanceOptional = balanceService.findBalanceByUserId(user.getId());
         UserCenter userCenter = UserCenter.builder()
                 .username(user.getUsername())

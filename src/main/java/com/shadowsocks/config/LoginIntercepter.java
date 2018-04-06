@@ -14,7 +14,7 @@ public class LoginIntercepter implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        String token = httpServletRequest.getHeader("token");
+        String token = httpServletRequest.getParameter("token");
 		User user = CacheUtils.get(token, User.class);
 		if(Objects.nonNull(user)) {
 		    return true;

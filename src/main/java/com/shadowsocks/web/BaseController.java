@@ -19,8 +19,7 @@ public class BaseController {
         return IpUtils.getCurrentIp(request);
     }
 
-    public User getUser() {
-        String token = request.getHeader("token");
+    public User getUser(String token) {
         return CacheUtils.get(token, User.class);
     }
 }
