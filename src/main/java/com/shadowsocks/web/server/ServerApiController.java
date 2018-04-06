@@ -19,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
@@ -31,13 +30,11 @@ public class ServerApiController extends BaseController implements ServerApi {
 
     private static final String ENCRYPTION = "aes-256-cfb";
 
-    private HttpSession session;
     private ServerService serverService;
     private EmailService emailService;
     private BalanceService balanceService;
 
-    public ServerApiController(HttpSession session, ServerService serverService, EmailService emailService, BalanceService balanceService) {
-        this.session = session;
+    public ServerApiController(ServerService serverService, EmailService emailService, BalanceService balanceService) {
         this.serverService = serverService;
         this.emailService = emailService;
         this.balanceService = balanceService;
@@ -55,7 +52,7 @@ public class ServerApiController extends BaseController implements ServerApi {
 
     @Override
     public List<ServerDto> findMyServers() {
-        User user = (User) session.getAttribute(SessionKeyUtils.getKeyForUser());
+        User user = getUser();
         List<Server> serverList = serverService.findMyServers(user.getId());
         return serverList.stream().map(server ->
             ServerDto.builder()
@@ -92,7 +89,7 @@ public class ServerApiController extends BaseController implements ServerApi {
 
     @Override
     public ResponseMessageDto purchaseServer(@PathVariable("id") String id) {
-        User user = (User) session.getAttribute(SessionKeyUtils.getKeyForUser());
+        User user = getUser();
         int serverId = Integer.parseInt(id);
         Optional<Balance> balanceOptional = balanceService.findBalanceByUserId(user.getId());
         if(balanceOptional.isPresent() && balanceOptional.get().getCurrentBalance() > 10.0) {

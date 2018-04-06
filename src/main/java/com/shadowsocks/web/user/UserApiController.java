@@ -10,6 +10,7 @@ import com.shadowsocks.dto.enums.ActiveStatusEnum;
 import com.shadowsocks.dto.enums.ResultEnum;
 import com.shadowsocks.dto.request.LoginDto;
 import com.shadowsocks.dto.request.RegisterDto;
+import com.shadowsocks.dto.response.LoginResponse;
 import com.shadowsocks.dto.response.UserCenter;
 import com.shadowsocks.service.BalanceService;
 import com.shadowsocks.service.EmailService;
@@ -69,7 +70,7 @@ public class UserApiController extends BaseController implements UserApi {
 		response.setDateHeader("Expires", 0);
 		response.setContentType("image/jpeg");
 
-		String ipAddress = getCurrentIpAddress(request);
+		String ipAddress = getCurrentIpAddress();
 		String userAgent = request.getHeader("User-Agent");
         String verifyCode = CaptchaUtils.generateVerifyCode(4);
         log.info("生成验证码 {} ，来源IP {}, User-Agent {}", verifyCode, ipAddress, userAgent);
@@ -113,7 +114,7 @@ public class UserApiController extends BaseController implements UserApi {
                 .username(registerDto.getUsername().toLowerCase())
                 .email(registerDto.getEmail())
                 .password(registerDto.getPassword())
-                .registerIp(getCurrentIpAddress(request))
+                .registerIp(getCurrentIpAddress())
                 .registerTime(time)
                 .loginTimes(0)
                 .lastLoginTime("")
@@ -156,7 +157,7 @@ public class UserApiController extends BaseController implements UserApi {
         boolean result = userService.register(user);
 
         if(result) {
-            log.info("注册成功， 用户名 {}, 邮箱 {}, 来源IP {}", registerDto.getUsername(), registerDto.getEmail(), getCurrentIpAddress(request));
+            log.info("注册成功， 用户名 {}, 邮箱 {}, 来源IP {}", registerDto.getUsername(), registerDto.getEmail(), getCurrentIpAddress());
             sendActiveEmail(registerDto.getEmail(), user.getActiveCode());
             return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("注册成功, 请检查邮箱并激活账号").build();
         }
@@ -199,25 +200,17 @@ public class UserApiController extends BaseController implements UserApi {
     }
 
     @Override
-    public ResponseMessageDto login(@RequestBody LoginDto loginDto) {
-        loginDto.setIp(getCurrentIpAddress(request));
+    public LoginResponse login(@RequestBody LoginDto loginDto) {
+        loginDto.setIp(getCurrentIpAddress());
         Optional<User> userOptional = userService.login(loginDto);
-        userOptional.ifPresent(user -> {
-            session.setMaxInactiveInterval(3600);
-            session.setAttribute(SessionKeyUtils.getKeyForUser(), user);
-        });
+        String token = RandomStringUtils.generateRandomStringWithMD5();
+        userOptional.ifPresent(user -> CacheUtils.put(token, user, 3600));
         if(userOptional.isPresent()) {
             log.info("用户 {} 登录成功, 来源 IP {}", loginDto.getUsername(), loginDto.getIp());
-            return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("登录成功").build();
+            return LoginResponse.builder().result(ResultEnum.SUCCESS).token(token).build();
         }
         log.error("用户 {} 登录失败， 密码 {}, 来源 IP {}", loginDto.getUsername(), loginDto.getPassword(), loginDto.getIp());
-        return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("登录失败").build();
-    }
-
-    @Override
-    public ResponseMessageDto logout() {
-        session.removeAttribute(SessionKeyUtils.getKeyForUser());
-        return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("退出登录成功").build();
+        return LoginResponse.builder().result(ResultEnum.FAIL).build();
     }
 
     private void sendInviteEmail(String username, String email, String message) {
@@ -228,10 +221,9 @@ public class UserApiController extends BaseController implements UserApi {
         EmailUtils.sendEmailAsyc(emailConfigList, emailObject);
     }
 
-
     @Override
     public ResponseMessageDto inviteFriend(@PathVariable("email") String email) {
-        User user = (User) session.getAttribute(SessionKeyUtils.getKeyForUser());
+        User user = getUser();
         int inviter = user.getId();
         String webURL = globalConfig.getWebUrl();
         String inviteURL = webURL + "/register.html?inviter=" + inviter;
@@ -242,7 +234,7 @@ public class UserApiController extends BaseController implements UserApi {
 
     @Override
     public UserCenter userCenter() {
-        User user = (User) session.getAttribute(SessionKeyUtils.getKeyForUser());
+        User user = getUser();
         Optional<Balance> balanceOptional = balanceService.findBalanceByUserId(user.getId());
         UserCenter userCenter = UserCenter.builder()
                 .username(user.getUsername())

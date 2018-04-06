@@ -3,6 +3,7 @@ package com.shadowsocks.web.user;
 import com.shadowsocks.dto.ResponseMessageDto;
 import com.shadowsocks.dto.request.LoginDto;
 import com.shadowsocks.dto.request.RegisterDto;
+import com.shadowsocks.dto.response.LoginResponse;
 import com.shadowsocks.dto.response.UserCenter;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,14 +62,7 @@ public interface UserApi {
 	 * */
 	@ApiOperation(value = "用户登录", tags = "user")
 	@RequestMapping(path = "/login", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
-	ResponseMessageDto login(@RequestBody LoginDto loginDto);
-
-	/**
-	 * 退出登录
-	 * */
-	@ApiOperation(value = "用户注销", tags = "user")
-	@RequestMapping(path = "/logout", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
-	ResponseMessageDto logout();
+    LoginResponse login(@RequestBody LoginDto loginDto);
 
 	/**
 	 * 查看邀请码

@@ -1,7 +1,7 @@
 package com.shadowsocks.config;
 
 import com.shadowsocks.dto.entity.User;
-import com.shadowsocks.utils.SessionKeyUtils;
+import com.shadowsocks.utils.CacheUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,12 +14,14 @@ public class LoginIntercepter implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-		User user = (User) httpServletRequest.getSession().getAttribute(SessionKeyUtils.getKeyForUser());
+        String token = httpServletRequest.getHeader("token");
+		User user = CacheUtils.get(token, User.class);
 		if(Objects.nonNull(user)) {
-			return true;
-		}
+		    return true;
+        }
+
 		httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
-		httpServletResponse.getWriter().println("Please login!");
+		httpServletResponse.getWriter().println("Please login firstly!");
 		return false;
 	}
 

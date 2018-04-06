@@ -27,14 +27,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PayApiController extends BaseController implements PayApi{
 
-    private HttpSession session;
     private PayService payService;
     private GlobalConfig globalConfig;
     private BalanceService balanceService;
 
-    public PayApiController(HttpSession session, PayService payService,
+    public PayApiController(PayService payService,
                             BalanceService balanceService, GlobalConfig globalConfig) {
-        this.session = session;
         this.payService = payService;
         this.balanceService = balanceService;
         this.globalConfig = globalConfig;
@@ -42,7 +40,7 @@ public class PayApiController extends BaseController implements PayApi{
 
     @Override
     public ThirdPartyPayDto reload(@PathVariable("channel") PaymentEnum channel, @PathVariable("amount") double amount) {
-        User user = (User) session.getAttribute(SessionKeyUtils.getKeyForUser());
+        User user = getUser();
         String transactionId = RandomStringUtils.generateRandomStringWithMD5();
         PaymentDto paymentDto = PaymentDto.builder()
                 .transactionId(transactionId)
@@ -79,7 +77,7 @@ public class PayApiController extends BaseController implements PayApi{
     //TODO channel和status显示为中文
     @Override
     public List<PaymentOrderDto> findOrdersByUserId() {
-        User user = (User) session.getAttribute(SessionKeyUtils.getKeyForUser());
+        User user = getUser();
         List<PayOrder> payOrderList = payService.findOrdersByUserId(user.getId());
         return payOrderList.stream().map(payOrder ->
             PaymentOrderDto.builder()
