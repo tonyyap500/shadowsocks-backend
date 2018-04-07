@@ -12,3 +12,9 @@ server:
 global:
   url: "http://localhost:8822"
   webUrl: "http://localhost"
+
+pay:
+  gaotong:
+    merchantNo: 13570
+    publicKey: b1b54af568a6846602955f5e8a862929
+    callback: http://katecat1993.viphk.ngrok.org/shadowsocks/pay/callback

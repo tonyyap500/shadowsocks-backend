@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RequestMapping("pay")
@@ -20,7 +21,7 @@ public interface PayApi {
 
     @ApiOperation(value = "异步回调", tags = "pay")
     @RequestMapping(path = "/callback", method = RequestMethod.GET)
-    boolean callback(String transactionId);
+    void callback();
 
     @ApiOperation(value = "查看充值订单", tags = "pay")
     @RequestMapping(path = "/order", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")

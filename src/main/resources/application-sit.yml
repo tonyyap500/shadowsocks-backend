@@ -10,5 +10,11 @@ server:
   contextPath: /shadowsocks
 
 global:
-  url: "http://localhost:8822"
-  webUrl: "http://localhost"
+  url: "https://api.oceanhere.com"
+  webUrl: "https://www.oceanhere.com"
+
+pay:
+  gaotong:
+    merchantNo: 13570
+    publicKey: b1b54af568a6846602955f5e8a862929
+    callback: https://api.oceanhere.com/shadowsocks/pay/callback
