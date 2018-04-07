@@ -9,5 +9,6 @@ public class ServerRequestDto {
     private String city;
     private String cityInChinese;
     private String domain;
-    private String port;
+    private long minPort;
+    private long maxPort;
 }
