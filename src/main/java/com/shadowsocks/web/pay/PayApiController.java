@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @RestController
@@ -58,10 +60,11 @@ public class PayApiController extends BaseController implements PayApi{
         boolean result = payService.createOrder(paymentDto);
         if(result) {
             log.info("用户 {} 创建充值订单, 金额 {}, 通道 {}", user.getUsername(), amount, channel);
+            double randomValue = BigDecimal.valueOf(new Random().nextFloat()).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
             GaotongPayDto gaotongPayDto = GaotongPayDto.builder()
                     .callbackURL(gaotongConfig.getCallback())
                     .merchantNo(gaotongConfig.getMerchantNo())
-                    .money((int) amount)
+                    .money(amount + randomValue)
                     .remark("")
                     .paymentType(GaotongEnum.WEIXIN)
                     .publicKey(gaotongConfig.getPublicKey())

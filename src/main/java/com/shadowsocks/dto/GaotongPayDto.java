@@ -30,7 +30,7 @@ public class GaotongPayDto {
 	/**
 	 * 支付金额
 	 * */
-	private int money;
+	private double money;
 
 	/**
 	 * 订单号
