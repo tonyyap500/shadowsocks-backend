@@ -27,8 +27,11 @@ public interface AdminApi {
     @RequestMapping(path = "/getUserOrder", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     PaymentOrderDto findOrdersByOrderId(String orderId);
 
-
     @ApiOperation(value = "根据用户名查看充值订单", tags = "admin")
     @RequestMapping(path = "/getOrderLit", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     List<PaymentOrderDto> findOrdersList(String userName);
+
+    @ApiOperation(value = "检查邮箱是否正常", tags = "admin")
+    @RequestMapping(path = "/checkEmail", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+    ResponseMessageDto checkEmail(String email, String password);
 }

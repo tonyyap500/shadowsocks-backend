@@ -1,6 +1,9 @@
 package com.shadowsocks.web.admin;
 
+import com.google.common.collect.Lists;
 import com.shadowsocks.dto.ResponseMessageDto;
+import com.shadowsocks.dto.entity.EmailConfig;
+import com.shadowsocks.dto.entity.EmailObject;
 import com.shadowsocks.dto.entity.PayOrder;
 import com.shadowsocks.dto.entity.Server;
 import com.shadowsocks.dto.enums.ResultEnum;
@@ -13,6 +16,7 @@ import com.shadowsocks.service.PayService;
 import com.shadowsocks.service.ServerService;
 import com.shadowsocks.service.UserService;
 import com.shadowsocks.utils.DecimalUtils;
+import com.shadowsocks.utils.EmailUtils;
 import com.shadowsocks.utils.RandomStringUtils;
 import com.shadowsocks.utils.SleepUtils;
 import com.shadowsocks.web.BaseController;
@@ -131,8 +135,26 @@ public class AdminApiController extends BaseController implements AdminApi {
                 .createTime(payOrder.get().getCreateTime())
                 .updateTime(payOrder.get().getUpdateTime())
                 .build();
+    }
 
+    @Override
+    public ResponseMessageDto checkEmail(String email, String password) {
+        if(email.contains("@") && email.contains(".")) {
+            String username = email.split("@")[0];
+            String smtp = "smtp." + email.split("@")[1];
 
+            EmailConfig emailConfig = EmailConfig.builder()
+                    .username(username)
+                    .password(password)
+                    .smtpServer(smtp)
+                    .build();
 
+            String to = "renjie373270@gmail.com";
+            EmailObject emailObject = EmailObject.builder().toList(Lists.newArrayList(to)).subject("测试邮件").content("测试邮件").build();
+            EmailUtils.sendEmailAsyc(Lists.newArrayList(emailConfig), emailObject);
+            return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("请查看日志").build();
+        }else {
+            return ResponseMessageDto.builder().result(ResultEnum.FAIL).message("邮箱格式不正确").build();
+        }
     }
 }
