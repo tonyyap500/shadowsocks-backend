@@ -6,10 +6,12 @@ import com.shadowsocks.dto.entity.Server;
 import com.shadowsocks.dto.enums.ResultEnum;
 import com.shadowsocks.dto.request.ServerRequestDto;
 import com.shadowsocks.dto.request.UserBalanceRequestDto;
+import com.shadowsocks.dto.response.PaymentOrderDto;
 import com.shadowsocks.exception.BusinessException;
 import com.shadowsocks.service.BalanceService;
 import com.shadowsocks.service.PayService;
 import com.shadowsocks.service.ServerService;
+import com.shadowsocks.utils.DecimalUtils;
 import com.shadowsocks.utils.RandomStringUtils;
 import com.shadowsocks.utils.SleepUtils;
 import com.shadowsocks.web.BaseController;
@@ -94,5 +96,20 @@ public class AdminApiController extends BaseController implements AdminApi {
 
         }
 
+    }
+
+    @Override
+    public PaymentOrderDto findOrdersByOrderId(String orderId) {
+
+        Optional<PayOrder> payOrder=payService.findOrderByTransactionId(orderId);
+
+        return  PaymentOrderDto.builder()
+                .transactionId(payOrder.get().getTransactionId())
+                .amount(DecimalUtils.halfRoundUp(payOrder.get().getAmount()))
+                .channel(payOrder.get().getChannel())
+                .status(payOrder.get().getStatus())
+                .createTime(payOrder.get().getCreateTime())
+                .updateTime(payOrder.get().getUpdateTime())
+                .build();
     }
 }
