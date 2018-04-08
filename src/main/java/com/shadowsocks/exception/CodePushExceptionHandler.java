@@ -19,6 +19,6 @@ public class CodePushExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public VndErrors.VndError internalException(Exception e) {
         log.error("服务器内部错误 {}", e);
-        return new VndErrors.VndError(LEVEL, "服务器内部错误");
+        return new VndErrors.VndError(LEVEL, e.getMessage());
     }
 }

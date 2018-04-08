@@ -6,6 +6,7 @@ import com.shadowsocks.dto.entity.Server;
 import com.shadowsocks.dto.enums.ResultEnum;
 import com.shadowsocks.dto.request.ServerRequestDto;
 import com.shadowsocks.dto.request.UserBalanceRequestDto;
+import com.shadowsocks.exception.BusinessException;
 import com.shadowsocks.service.BalanceService;
 import com.shadowsocks.service.PayService;
 import com.shadowsocks.service.ServerService;
@@ -73,17 +74,19 @@ public class AdminApiController extends BaseController implements AdminApi {
     public void userBalabceServer(UserBalanceRequestDto userBalanceRequestDto) {
         Optional<PayOrder> order= payService.findOrderByTransactionId(userBalanceRequestDto.getOrderId());
         if(order.isPresent()){
-            if(userBalanceRequestDto.getAmount().equals(order.get().getAmount())){
+            if(userBalanceRequestDto.getAmount()==order.get().getAmount()){
             payService.updateStatus(userBalanceRequestDto.getOrderId());
 
             balanceService.addBalanceByUserId(order.get().getUserId(),order.get().getAmount());
             }else {
                 log.error("订单号与入款金额不符，订单号{}, 金额{},", userBalanceRequestDto.getOrderId(), userBalanceRequestDto.getAmount());
-
+                throw new BusinessException("订单号与入款金额不符，订单号："+ userBalanceRequestDto.getOrderId()+ "金额："+userBalanceRequestDto.getAmount());
             }
 
         }else {
             log.error("没有查询到订单，订单号{}, 金额{},", userBalanceRequestDto.getOrderId(), userBalanceRequestDto.getAmount());
+
+            throw new BusinessException("没有查询到订单，订单号："+userBalanceRequestDto.getOrderId()+"金额："+ userBalanceRequestDto.getAmount());
 
         }
 

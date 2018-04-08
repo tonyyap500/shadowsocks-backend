@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class UserBalanceRequestDto {
     private String orderId;
-    private String amount;
+    private Double amount;
 
 }
