@@ -11,6 +11,7 @@ import com.shadowsocks.exception.BusinessException;
 import com.shadowsocks.service.BalanceService;
 import com.shadowsocks.service.PayService;
 import com.shadowsocks.service.ServerService;
+import com.shadowsocks.service.UserService;
 import com.shadowsocks.utils.DecimalUtils;
 import com.shadowsocks.utils.RandomStringUtils;
 import com.shadowsocks.utils.SleepUtils;
@@ -37,6 +38,9 @@ public class AdminApiController extends BaseController implements AdminApi {
 
     @Resource
     private BalanceService balanceService;
+
+    @Resource
+    private UserService userService;
 
 
 
@@ -99,6 +103,22 @@ public class AdminApiController extends BaseController implements AdminApi {
     }
 
     @Override
+    public List<PaymentOrderDto> findOrdersList(String userName) {
+        int id=userService.findUserIdByUsername(userName);
+        List<PayOrder> payOrderList = payService.findOrdersByUserId(id);
+        return payOrderList.stream().map(payOrder ->
+                PaymentOrderDto.builder()
+                        .transactionId(payOrder.getTransactionId())
+                        .amount(DecimalUtils.halfRoundUp(payOrder.getAmount()))
+                        .channel(payOrder.getChannel())
+                        .status(payOrder.getStatus())
+                        .createTime(payOrder.getCreateTime())
+                        .updateTime(payOrder.getUpdateTime())
+                        .build()
+        ).collect(Collectors.toList());
+    }
+
+    @Override
     public PaymentOrderDto findOrdersByOrderId(String orderId) {
 
         Optional<PayOrder> payOrder=payService.findOrderByTransactionId(orderId);
@@ -111,5 +131,8 @@ public class AdminApiController extends BaseController implements AdminApi {
                 .createTime(payOrder.get().getCreateTime())
                 .updateTime(payOrder.get().getUpdateTime())
                 .build();
+
+
+
     }
 }

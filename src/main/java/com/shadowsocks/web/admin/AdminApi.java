@@ -26,4 +26,9 @@ public interface AdminApi {
     @ApiOperation(value = "查看充值订单", tags = "admin")
     @RequestMapping(path = "/getUserOrder", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     PaymentOrderDto findOrdersByOrderId(String orderId);
+
+
+    @ApiOperation(value = "查看充值订单", tags = "pay")
+    @RequestMapping(path = "/getOrderLit", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+    List<PaymentOrderDto> findOrdersList(String userName);
 }
