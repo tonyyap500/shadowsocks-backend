@@ -17,7 +17,7 @@ public interface PayApi {
 
     @ApiOperation(value = "充值", tags = "pay")
     @RequestMapping(path = "/reload/{channel}/{amount}", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
-    ThirdPartyPayDto reload(@PathVariable("channel") PaymentEnum paymentEnum, @PathVariable("amount") double amount, String token);
+    ThirdPartyPayDto reload(@PathVariable("channel") PaymentEnum paymentEnum, @PathVariable("amount") double amount, String token,String remark);
 
     @ApiOperation(value = "异步回调", tags = "pay")
     @RequestMapping(path = "/callback", method = RequestMethod.GET)

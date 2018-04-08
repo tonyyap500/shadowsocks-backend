@@ -47,7 +47,7 @@ public class PayApiController extends BaseController implements PayApi{
     }
 
     @Override
-    public ThirdPartyPayDto reload(@PathVariable("channel") PaymentEnum channel, @PathVariable("amount") double amount, String token) {
+    public ThirdPartyPayDto reload(@PathVariable("channel") PaymentEnum channel, @PathVariable("amount") double amount, String token,String remark) {
         User user = getUser(token);
         String transactionId = RandomStringUtils.generateRandomStringWithMD5();
         PaymentDto paymentDto = PaymentDto.builder()
@@ -55,7 +55,7 @@ public class PayApiController extends BaseController implements PayApi{
                 .userId(user.getId())
                 .channel(channel.name())
                 .amount(amount)
-                .remark("高通支付")
+                .remark(remark)
                 .build();
         boolean result = payService.createOrder(paymentDto);
         if(result) {
