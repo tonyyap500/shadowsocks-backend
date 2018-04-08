@@ -23,12 +23,12 @@ public interface AdminApi {
     @RequestMapping(path = "/addUserBalance", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     void userBalabceServer(@RequestBody UserBalanceRequestDto userBalanceRequestDto);
 
-    @ApiOperation(value = "查看充值订单", tags = "admin")
+    @ApiOperation(value = "根据订单号查看充值订单", tags = "admin")
     @RequestMapping(path = "/getUserOrder", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     PaymentOrderDto findOrdersByOrderId(String orderId);
 
 
-    @ApiOperation(value = "查看充值订单", tags = "pay")
+    @ApiOperation(value = "根据用户名查看充值订单", tags = "admin")
     @RequestMapping(path = "/getOrderLit", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     List<PaymentOrderDto> findOrdersList(String userName);
 }
