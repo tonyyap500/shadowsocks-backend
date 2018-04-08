@@ -55,7 +55,7 @@ public class PayApiController extends BaseController implements PayApi{
                 .userId(user.getId())
                 .channel(channel.name())
                 .amount(amount)
-                .remark(remark)
+                .remark(remark!=null?remark:user.getUsername())
                 .build();
         boolean result = payService.createOrder(paymentDto);
         if(result) {
