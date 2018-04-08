@@ -74,6 +74,10 @@ public class AdminApiController extends BaseController implements AdminApi {
     public void userBalabceServer(UserBalanceRequestDto userBalanceRequestDto) {
         Optional<PayOrder> order= payService.findOrderByTransactionId(userBalanceRequestDto.getOrderId());
         if(order.isPresent()){
+            if(!order.get().getStatus().equals("PENDING")){
+                throw new BusinessException("订单已经处理，订单号："+userBalanceRequestDto.getOrderId()+"金额："+ userBalanceRequestDto.getAmount());
+
+            }
             if(userBalanceRequestDto.getAmount()==order.get().getAmount()){
             payService.updateStatus(userBalanceRequestDto.getOrderId());
 
