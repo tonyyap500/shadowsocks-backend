@@ -165,7 +165,7 @@ public class UserApiController extends BaseController implements UserApi {
     }
 
     @Override
-    public ResponseMessageDto resendActiveEmail(String email) {
+    public ResponseMessageDto resendActiveEmail(@PathVariable("email") String email) {
         Optional<String> activeCodeOptional = userService.findActiveCodeByEmail(email);
         if(!activeCodeOptional.isPresent()) {
             log.error("邮箱 {} 不存在", email);
