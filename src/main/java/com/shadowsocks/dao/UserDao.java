@@ -30,7 +30,7 @@ public interface UserDao {
 	@Update("update " + TABLE_NAME + " set active_status='ACTIVE' where active_status='NON_ACTIVE' and active_code=#{activeCode}")
 	int active(@Param("activeCode") String activeCode);
 
-	@Select("select * from " + TABLE_NAME + " where (username=#{username} or email=#{username}) and password=#{password} and active_status='ACTIVE'")
+	@Select("select * from " + TABLE_NAME + " where username=#{username}")
 	@Results(
 			id = BASE_RESULT,
 			value = {
@@ -48,7 +48,7 @@ public interface UserDao {
 					@Result(property = "activeCode", column = "activeCode")
 			}
 	)
-    User login(@Param("username") String username, @Param("password") String password);
+	User findUserByUsername(@Param("username") String username);
 
 	@Select("select * from " + TABLE_NAME + " where active_code=#{activeCode}")
 	@ResultMap(BASE_RESULT)

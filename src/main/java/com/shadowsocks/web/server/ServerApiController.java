@@ -100,7 +100,7 @@ public class ServerApiController extends BaseController implements ServerApi {
                 String contentPattern = HtmlUtils.getPurchaseHtmlPattern();
                 String content = MessageFormat.format(contentPattern, dto.getDomain(), dto.getPort(), dto.getPassword(), dto.getEncryption(), dto.getCountry(), dto.getCity());
 
-                EmailObject emailObject = EmailObject.builder().toList(Lists.newArrayList(user.getEmail())).subject("OceanHere 服务购买成功").content(content).build();
+                EmailObject emailObject = EmailObject.builder().toList(Lists.newArrayList(user.getEmail())).subject("404Here 服务购买成功").content(content).build();
                 EmailUtils.sendEmailAsyc(emailConfigList, emailObject);
                 log.info("用户 [userId = {}] 购买服务器，国家{}， 城市{}, 域名{}, 端口{}", user.getId(), dto.getCountry(), dto.getCity(), dto.getDomain(), dto.getPort());
                 return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("购买成功，购买结果请查看邮件").build();

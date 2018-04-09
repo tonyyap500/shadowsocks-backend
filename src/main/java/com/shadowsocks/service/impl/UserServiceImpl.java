@@ -4,6 +4,7 @@ import com.shadowsocks.dao.UserDao;
 import com.shadowsocks.dto.entity.User;
 import com.shadowsocks.dto.request.LoginDto;
 import com.shadowsocks.service.UserService;
+import jdk.nashorn.internal.runtime.options.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -57,20 +58,21 @@ public class UserServiceImpl implements UserService {
 		return Optional.ofNullable(user);
 	}
 
+	public void updateLoginInfo(User user, String ip) {
+		int loginTimes = user.getLoginTimes();
+		loginTimes = loginTimes + 1;
+		user.setLoginTimes(loginTimes);
+		String time = LocalDateTime.now().format(formatter);
+		userDao.updateUserById(user.getId(), loginTimes, ip, time);
+	}
+
 	@Override
-	public Optional<User> login(LoginDto loginDto) {
-		User user = userDao.login(loginDto.getUsername().toLowerCase(), loginDto.getPassword());
-		if(Objects.nonNull(user)) {
-			int loginTimes = user.getLoginTimes();
-			loginTimes = loginTimes + 1;
-			user.setLoginTimes(loginTimes);
-			String time = LocalDateTime.now().format(formatter);
-			userDao.updateUserById(user.getId(), loginTimes, loginDto.getIp(), time);
-		}
+	public Optional<User> findUserByUsername(String username) {
+		User user = userDao.findUserByUsername(username);
 		return Optional.ofNullable(user);
 	}
 
-    @Override
+	@Override
     public int update(User user) {
         return userDao.update(user);
     }

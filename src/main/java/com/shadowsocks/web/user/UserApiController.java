@@ -136,7 +136,7 @@ public class UserApiController extends BaseController implements UserApi {
 
         String contentPattern = HtmlUtils.getActiveHtmlPattern();
         String content = MessageFormat.format(contentPattern, activeURL);
-        EmailObject emailObject = EmailObject.builder().toList(Lists.newArrayList(email)).subject("OceanHere 激活邮件").content(content).build();
+        EmailObject emailObject = EmailObject.builder().toList(Lists.newArrayList(email)).subject("404Here 激活邮件").content(content).build();
         EmailUtils.sendEmailAsyc(emailConfigList, emailObject);
     }
 
@@ -201,16 +201,25 @@ public class UserApiController extends BaseController implements UserApi {
 
     @Override
     public LoginResponse login(@RequestBody LoginDto loginDto) {
-        loginDto.setIp(getCurrentIpAddress());
-        Optional<User> userOptional = userService.login(loginDto);
-        String token = RandomStringUtils.generateRandomStringWithMD5();
-        userOptional.ifPresent(user -> CacheUtils.put(token, user, 3600));
-        if(userOptional.isPresent()) {
-            log.info("用户 {} 登录成功, 来源 IP {}", loginDto.getUsername(), loginDto.getIp());
-            return LoginResponse.builder().result(ResultEnum.SUCCESS).token(token).build();
+        Optional<User> userOptional = userService.findUserByUsername(loginDto.getUsername());
+        if(!userOptional.isPresent()) {
+            log.info("用户名 {} 不存在", loginDto.getUsername());
+            return LoginResponse.builder().result(ResultEnum.FAIL).message("用户不存在").build();
         }
-        log.error("用户 {} 登录失败， 密码 {}, 来源 IP {}", loginDto.getUsername(), loginDto.getPassword(), loginDto.getIp());
-        return LoginResponse.builder().result(ResultEnum.FAIL).build();
+        User user = userOptional.get();
+        if(!user.getActiveStatus().equals("ACTIVE")) {
+            log.info("用户名 {} 未激活", loginDto.getUsername());
+            return LoginResponse.builder().result(ResultEnum.FAIL).message("用户未激活").build();
+        }
+        if(!user.getPassword().equals(loginDto.getPassword())) {
+            log.info("用户 {}， 密码错误， 实际密码 {}， 输入密码 {} ", loginDto.getUsername(), user.getPassword(), loginDto.getPassword());
+            return LoginResponse.builder().result(ResultEnum.FAIL).message("密码不正确").build();
+        }
+        userService.updateLoginInfo(user, getCurrentIpAddress());
+        String token = RandomStringUtils.generateRandomStringWithMD5();
+        CacheUtils.put(token, user, 3600);
+        log.info("用户 {} 登录成功, 来源 IP {}", loginDto.getUsername(), loginDto.getIp());
+        return LoginResponse.builder().result(ResultEnum.SUCCESS).token(token).build();
     }
 
     private void sendInviteEmail(String username, String email, String message) {

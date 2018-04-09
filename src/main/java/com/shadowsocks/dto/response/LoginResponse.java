@@ -22,4 +22,9 @@ public class LoginResponse {
      * token
      * */
     private String token;
+
+    /**
+     * message
+     * */
+    private String message;
 }

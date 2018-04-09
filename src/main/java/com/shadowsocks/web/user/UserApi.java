@@ -5,7 +5,6 @@ import com.shadowsocks.dto.request.LoginDto;
 import com.shadowsocks.dto.request.RegisterDto;
 import com.shadowsocks.dto.response.LoginResponse;
 import com.shadowsocks.dto.response.UserCenter;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -2,6 +2,7 @@ package com.shadowsocks.service;
 
 import com.shadowsocks.dto.entity.User;
 import com.shadowsocks.dto.request.LoginDto;
+import jdk.nashorn.internal.runtime.options.Option;
 
 import java.util.Optional;
 
@@ -38,10 +39,16 @@ public interface UserService {
 	 * */
 	Optional<User> findUserByActiveCode(String activeCode);
 
+
 	/**
-	 * 登录
+	 * 更新登录信息
 	 * */
-	Optional<User> login(LoginDto loginDto);
+	void updateLoginInfo(User user, String ip);
+
+	/**
+	 * 根据用户名查询用户
+	 * */
+	Optional<User> findUserByUsername(String username);
 
 	/**
 	 * 更新登录信息
