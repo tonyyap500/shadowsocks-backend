@@ -30,7 +30,6 @@ public class EmailUtils {
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.host", emailConfig.getSmtpServer());
 		props.put("mail.transport.protocol", "smtp");
-		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.port", "465");
 		props.put("mail.debug", "true");
 		props.put("mail.smtp.socketFactory.port", "465");
@@ -59,7 +58,7 @@ public class EmailUtils {
 			MimeMessage msg = new MimeMessage(session);
 			msg.setSubject(emailObject.getSubject());
 			msg.setText(emailObject.getContent(), "utf-8", "html");
-			msg.setFrom(new InternetAddress("VideoWebsite"));
+			msg.setFrom(new InternetAddress("404Here"));
 			Transport transport = session.getTransport();
 			transport.connect(emailConfig.getUsername(), emailConfig.getPassword());
 			Address[] addresses = buildAddresses(emailObject);
@@ -75,6 +74,6 @@ public class EmailUtils {
 	}
 
 	public static void sendEmailAsyc(List<EmailConfig> emailConfigList, EmailObject emailObject) {
-		CompletableFuture.supplyAsync(() -> sendEmail(emailConfigList, emailObject));
+		new Thread(() -> sendEmail(emailConfigList, emailObject)).start();
 	}
 }
