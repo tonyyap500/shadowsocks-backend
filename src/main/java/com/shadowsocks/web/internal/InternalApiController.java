@@ -24,6 +24,11 @@ public class InternalApiController extends BaseController implements InternalApi
     }
 
     @Override
+    public String getLatestConfig() {
+        return getCurrentIpAddress();
+    }
+
+    @Override
     public String getLatestConfig(String domain) {
         List<Server> serverList = serverService.findServersByDomain(domain);
         if(CollectionUtils.isEmpty(serverList)) {
