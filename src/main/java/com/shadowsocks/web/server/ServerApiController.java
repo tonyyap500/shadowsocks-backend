@@ -92,7 +92,7 @@ public class ServerApiController extends BaseController implements ServerApi {
         User user = getUser(token);
         int serverId = Integer.parseInt(id);
         Optional<Balance> balanceOptional = balanceService.findBalanceByUserId(user.getId());
-        if(balanceOptional.isPresent() && balanceOptional.get().getCurrentBalance() > 10.0) {
+        if(balanceOptional.isPresent() && balanceOptional.get().getCurrentBalance() >= 10.0) {
             Optional<ServerDto> serverDtoOptional = applyServer(user.getId(), serverId);
             if(serverDtoOptional.isPresent()) {
                 ServerDto dto = serverDtoOptional.get();

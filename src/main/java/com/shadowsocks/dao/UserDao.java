@@ -30,7 +30,7 @@ public interface UserDao {
 	@Update("update " + TABLE_NAME + " set active_status='ACTIVE' where active_status='NON_ACTIVE' and active_code=#{activeCode}")
 	int active(@Param("activeCode") String activeCode);
 
-	@Select("select * from " + TABLE_NAME + " where username=#{username}")
+	@Select("select * from " + TABLE_NAME + " where username=#{username} or email=#{username}")
 	@Results(
 			id = BASE_RESULT,
 			value = {

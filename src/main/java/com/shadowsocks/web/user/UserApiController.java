@@ -204,7 +204,7 @@ public class UserApiController extends BaseController implements UserApi {
         Optional<User> userOptional = userService.findUserByUsername(loginDto.getUsername());
         if(!userOptional.isPresent()) {
             log.info("用户名 {} 不存在", loginDto.getUsername());
-            return LoginResponse.builder().result(ResultEnum.FAIL).message("用户不存在").build();
+            return LoginResponse.builder().result(ResultEnum.FAIL).message("用户名或邮箱不存在").build();
         }
         User user = userOptional.get();
         if(!user.getActiveStatus().equals("ACTIVE")) {
