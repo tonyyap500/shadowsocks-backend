@@ -78,3 +78,16 @@ CREATE TABLE `payment_order` (
   `update_time` varchar(30) DEFAULT NULL,
   PRIMARY KEY(`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `admin` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `username` varchar(30) DEFAULT NULL,
+  `password` varchar(30) DEFAULT NULL,
+  `email` varchar(30) DEFAULT NULL,
+  `last_login_time` varchar(30) DEFAULT NULL,
+  `last_login_ip` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `admin_user_unique_key` (`username`) USING HASH,
+  UNIQUE KEY `admin_email_unique_key` (`email`) USING HASH
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;

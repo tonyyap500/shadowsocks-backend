@@ -2,6 +2,7 @@ package com.shadowsocks.service.impl;
 
 import com.shadowsocks.dao.PayDao;
 import com.shadowsocks.dto.PaymentDto;
+import com.shadowsocks.dto.PaymentOrderResponse;
 import com.shadowsocks.dto.entity.PayOrder;
 import com.shadowsocks.dto.enums.PayStatusEnum;
 import com.shadowsocks.service.PayService;
@@ -46,5 +47,15 @@ public class PayServiceImpl implements PayService{
     @Override
     public List<PayOrder> findOrdersByUserId(int userId) {
         return payDao.findOrdersByUserId(userId);
+    }
+
+    @Override
+    public PaymentOrderResponse findOrders(int start, int pageSize) {
+        int total = payDao.getTotal();
+        List<PayOrder> payOrders = payDao.findOrders(start, pageSize);
+        return PaymentOrderResponse.builder()
+                .total(total)
+                .payOrderList(payOrders)
+                .build();
     }
 }

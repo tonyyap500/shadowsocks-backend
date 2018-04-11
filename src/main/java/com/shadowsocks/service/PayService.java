@@ -1,6 +1,7 @@
 package com.shadowsocks.service;
 
 import com.shadowsocks.dto.PaymentDto;
+import com.shadowsocks.dto.PaymentOrderResponse;
 import com.shadowsocks.dto.entity.PayOrder;
 
 import java.util.List;
@@ -27,4 +28,9 @@ public interface PayService {
      * 根据用户id查询充值订单
      * */
     List<PayOrder> findOrdersByUserId(int userId);
+
+    /**
+     * 分页查询订单
+     * */
+    PaymentOrderResponse findOrders(int start, int pageSize);
 }

@@ -39,4 +39,11 @@ public interface PayDao {
     @Select("select * from " + TABLE_NAME + " where user_id=#{userId}")
     @ResultMap(BASE_RESULT)
     List<PayOrder> findOrdersByUserId(@Param("userId") int userId);
+
+    @Select("select * from " + TABLE_NAME + " order by id desc limit #{start}, #{pageSize}")
+    @ResultMap(BASE_RESULT)
+    List<PayOrder> findOrders(@Param("start") int start, @Param("pageSize") int pageSize);
+
+    @Select("select count(*) from " + TABLE_NAME)
+    int getTotal();
 }

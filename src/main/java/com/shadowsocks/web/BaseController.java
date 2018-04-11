@@ -1,5 +1,6 @@
 package com.shadowsocks.web;
 
+import com.shadowsocks.dto.entity.Admin;
 import com.shadowsocks.dto.entity.User;
 import com.shadowsocks.utils.CacheUtils;
 import com.shadowsocks.utils.IpUtils;
@@ -21,5 +22,9 @@ public class BaseController {
 
     public User getUser(String token) {
         return CacheUtils.get(token, User.class);
+    }
+
+    public Admin getAdmin(String token) {
+        return CacheUtils.get(token, Admin.class);
     }
 }
