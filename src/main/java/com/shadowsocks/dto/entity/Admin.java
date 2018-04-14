@@ -10,4 +10,5 @@ public class Admin {
     private String email;
     private String lastLoginTime;
     private String lastLoginIp;
+    private boolean isAdmin;
 }

@@ -26,4 +26,5 @@ public class User implements Serializable{
 	private String lastLoginIp;
 	private String activeStatus;
 	private String activeCode;
+	private boolean isAdmin;
 }

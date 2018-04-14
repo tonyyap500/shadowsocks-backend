@@ -1,5 +1,6 @@
 package com.shadowsocks.web.user;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.collect.Lists;
 import com.shadowsocks.config.GlobalConfig;
 import com.shadowsocks.dto.entity.Balance;
@@ -92,8 +93,13 @@ public class UserApiController extends BaseController implements UserApi {
     @Override
     public boolean isUsernameTaken(@PathVariable("username") String username) {
         boolean result = userService.isUsernameTaken(username.toLowerCase());
-        if(result) {
-            log.info("用户名 {} 已经被占用", username);
+        boolean isLegal = CharMatcher.ASCII.matchesAllOf(username) &&
+                !username.contains(" ") &&
+                !username.contains("'") &&
+                !username.contains("\"") &&
+                !username.contains("#");
+        if(result && isLegal) {
+            log.info("用户名 {} 不可用", username);
         }
         return result;
     }
@@ -102,7 +108,7 @@ public class UserApiController extends BaseController implements UserApi {
     public boolean isEmailTaken(@PathVariable("email") String email) {
         boolean result = userService.isEmailTaken(email);
         if(result) {
-            log.info("邮箱 {} 已被占用", email);
+            log.info("邮箱 {} 不可用", email);
         }
         return result;
     }
@@ -215,6 +221,7 @@ public class UserApiController extends BaseController implements UserApi {
             log.info("用户 {}， 密码错误， 实际密码 {}， 输入密码 {} ", loginDto.getUsername(), user.getPassword(), loginDto.getPassword());
             return LoginResponse.builder().result(ResultEnum.FAIL).message("密码不正确").build();
         }
+        user.setAdmin(false);
         userService.updateLoginInfo(user, getCurrentIpAddress());
         String token = RandomStringUtils.generateRandomStringWithMD5();
         CacheUtils.put(token, user, 3600);

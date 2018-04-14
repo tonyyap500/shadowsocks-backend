@@ -33,4 +33,9 @@ public interface PayService {
      * 分页查询订单
      * */
     PaymentOrderResponse findOrders(int start, int pageSize);
+
+    /**
+     * 标记订单完成
+     * */
+    boolean finishOrder(String transactionId);
 }

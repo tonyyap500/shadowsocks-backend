@@ -58,4 +58,11 @@ public class PayServiceImpl implements PayService{
                 .payOrderList(payOrders)
                 .build();
     }
+
+    @Override
+    public boolean finishOrder(String transactionId) {
+        String time = LocalDateTime.now().format(formatter);
+        int result = payDao.finishOrder(time, transactionId);
+        return result == 1;
+    }
 }

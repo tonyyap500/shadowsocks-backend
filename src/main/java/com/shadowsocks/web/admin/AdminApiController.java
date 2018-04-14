@@ -96,6 +96,7 @@ public class AdminApiController extends BaseController implements AdminApi {
         Optional<Admin> adminOptional = adminService.login(loginDto.getUsername(), loginDto.getPassword());
         if(adminOptional.isPresent()) {
             Admin admin = adminOptional.get();
+            admin.setAdmin(true);
             String token = RandomStringUtils.generateRandomStringWithMD5();
             CacheUtils.put(token, admin, 3600);
             adminService.updateAdminInfo(admin.getId(), getCurrentIpAddress());
@@ -106,12 +107,31 @@ public class AdminApiController extends BaseController implements AdminApi {
 
     @Override
     public PaymentOrderResponse findPayOrders(String token, int start, int pageSize) {
-        pageSize = pageSize < 50 ? pageSize : 50;
-        return payService.findOrders(start, pageSize);
+        Admin admin = getAdmin(token);
+        if(!admin.isAdmin()) {
+            return PaymentOrderResponse.builder().total(0).payOrderList(Lists.newArrayList()).build();
+        }
+        int size = pageSize < 50 ? pageSize : 50;
+        return payService.findOrders(start, size);
     }
 
     @Override
     public ResponseMessageDto updateOrder(String token, String transactionId) {
-        return null;
+        Admin admin = getAdmin(token);
+        if(!admin.isAdmin()) {
+            return ResponseMessageDto.builder().result(ResultEnum.FAIL).message("更新失败").build();
+        }
+        //TODO 用MyBatis事务
+        Optional<PayOrder> payOrderOptional = payService.findOrderByTransactionId(transactionId);
+        if(payOrderOptional.isPresent()) {
+            log.info("{} 标记充值订单 {} 为完成状态", admin.getUsername(), transactionId);
+            boolean result = payService.finishOrder(transactionId);
+            if(result) {
+                PayOrder payOrder = payOrderOptional.get();
+                log.info("{} 增加用户 [userId={}] 余额 {} 元", admin.getUsername(), payOrder.getUserId(), payOrder.getAmount());
+                balanceService.addBalanceByUserId(payOrder.getUserId(), payOrder.getAmount());
+            }
+        }
+        return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("订单状态更新成功").build();
     }
 }

@@ -46,4 +46,8 @@ public interface PayDao {
 
     @Select("select count(*) from " + TABLE_NAME)
     int getTotal();
+
+
+    @Update("update " + TABLE_NAME + " set status='FINISHED', update_time=#{updateTime} where transaction_id=#{transactionId}")
+    int finishOrder(@Param("updateTime") String updateTime, @Param("transactionId") String transactionId);
 }
