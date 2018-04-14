@@ -94,6 +94,7 @@ public class AdminApiController extends BaseController implements AdminApi {
     @Override
     public LoginResponse login(@RequestBody LoginDto loginDto) {
         Optional<Admin> adminOptional = adminService.login(loginDto.getUsername(), loginDto.getPassword());
+        log.info("管理员 {} 登录，来源 IP: {}", loginDto.getUsername(), getCurrentIpAddress());
         if(adminOptional.isPresent()) {
             Admin admin = adminOptional.get();
             admin.setAdmin(true);
