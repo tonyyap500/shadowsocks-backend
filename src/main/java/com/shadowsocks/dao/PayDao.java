@@ -48,6 +48,9 @@ public interface PayDao {
     int getTotal();
 
 
-    @Update("update " + TABLE_NAME + " set status='FINISHED', update_time=#{updateTime} where transaction_id=#{transactionId}")
+    @Update("update " + TABLE_NAME + " set status='FINISHED', update_time=#{updateTime} where transaction_id=#{transactionId} and status='PENDING'")
     int finishOrder(@Param("updateTime") String updateTime, @Param("transactionId") String transactionId);
+
+    @Update("update " + TABLE_NAME + " set status='CANCELLED', update_time=#{updateTime} where transaction_id=#{transactionId} and status='PENDING'")
+    int cancelOrder(@Param("updateTime") String updateTime, @Param("transactionId") String transactionId);
 }

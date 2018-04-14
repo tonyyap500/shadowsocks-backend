@@ -65,4 +65,11 @@ public class PayServiceImpl implements PayService{
         int result = payDao.finishOrder(time, transactionId);
         return result == 1;
     }
+
+    @Override
+    public boolean cancelOrder(String transactionId) {
+        String time = LocalDateTime.now().format(formatter);
+        int result = payDao.cancelOrder(time, transactionId);
+        return result == 1;
+    }
 }

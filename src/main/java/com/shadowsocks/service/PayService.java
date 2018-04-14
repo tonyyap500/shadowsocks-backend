@@ -38,4 +38,9 @@ public interface PayService {
      * 标记订单完成
      * */
     boolean finishOrder(String transactionId);
+
+    /**
+     * 取消订单
+     * */
+    boolean cancelOrder(String transactionId);
 }

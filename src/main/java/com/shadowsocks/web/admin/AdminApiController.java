@@ -117,12 +117,18 @@ public class AdminApiController extends BaseController implements AdminApi {
     }
 
     @Override
-    public ResponseMessageDto updateOrder(String token, String transactionId) {
+    public ResponseMessageDto updateOrder(String token, String transactionId, OrderStatus orderStatus) {
         Admin admin = getAdmin(token);
         if(!admin.isAdmin()) {
-            return ResponseMessageDto.builder().result(ResultEnum.FAIL).message("更新失败").build();
+            return ResponseMessageDto.builder().result(ResultEnum.FAIL).message("更新订单状态失败").build();
         }
         //TODO 用MyBatis事务
+        if(orderStatus.equals(OrderStatus.CANCELLED)) {
+            boolean result = payService.cancelOrder(transactionId);
+            if(result) {
+                return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("订单取消成功").build();
+            }
+        }
         Optional<PayOrder> payOrderOptional = payService.findOrderByTransactionId(transactionId);
         if(payOrderOptional.isPresent()) {
             log.info("{} 标记充值订单 {} 为完成状态", admin.getUsername(), transactionId);

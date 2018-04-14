@@ -31,7 +31,11 @@ public interface AdminApi {
     @RequestMapping(path = "/findOrders", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     PaymentOrderResponse findPayOrders(String token, int start, int pageSize);
 
+    enum OrderStatus {
+        CANCELLED,
+        FINISHED
+    }
     @ApiOperation(value = "标记为完成状态", tags = "admin")
     @RequestMapping(path = "/updateOrder", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
-    ResponseMessageDto updateOrder(String token, String transactionId);
+    ResponseMessageDto updateOrder(String token, String transactionId, OrderStatus orderStatus);
 }
