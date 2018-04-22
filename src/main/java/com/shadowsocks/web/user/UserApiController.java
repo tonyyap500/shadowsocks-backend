@@ -238,14 +238,23 @@ public class UserApiController extends BaseController implements UserApi {
     }
 
     @Override
-    public ResponseMessageDto inviteFriend(@PathVariable("email") String email, String token) {
+    public ResponseMessageDto inviteByURL(String token) {
+        User user = getUser(token);
+        int inviter = user.getId();
+        String webURL = globalConfig.getWebUrl();
+        String inviteURL = webURL + "/register.html?inviter=" + inviter;
+        return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message(inviteURL).build();
+    }
+
+    @Override
+    public ResponseMessageDto inviteByEmail(@PathVariable("email") String email, String token) {
         User user = getUser(token);
         int inviter = user.getId();
         String webURL = globalConfig.getWebUrl();
         String inviteURL = webURL + "/register.html?inviter=" + inviter;
         String message = "您的好友" + user.getUsername() + "邀请你科学上网, 请点击以下链接或复制后在浏览器中打开 " + inviteURL;
         sendInviteEmail(user.getUsername(), email, message);
-        return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("邀请信息已发送到好友邮箱, 请前往邮箱查看或在浏览器中打开 " + inviteURL).build();
+        return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("邀请信息已发送到好友邮箱, 请前往邮箱查看或在浏览器中打开").build();
     }
 
     @Override

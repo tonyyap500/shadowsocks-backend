@@ -65,11 +65,18 @@ public interface UserApi {
     LoginResponse login(@RequestBody LoginDto loginDto);
 
 	/**
-	 * 查看邀请码
+	 * 通过URL邀请好友
 	 * */
-	@ApiOperation(value = "邀请好友", tags = "user")
+	@ApiOperation(value = "通过链接邀请好友", tags = "user")
+	@RequestMapping(path = "/invite", method = RequestMethod.GET)
+	ResponseMessageDto inviteByURL(String token);
+
+	/**
+	 * 邮件邀请好友
+	 * */
+	@ApiOperation(value = "通过邮件邀请好友", tags = "user")
 	@RequestMapping(path = "/invite/{email:.+}", method = RequestMethod.GET)
-    ResponseMessageDto inviteFriend(@PathVariable("email") String email, String token);
+    ResponseMessageDto inviteByEmail(@PathVariable("email") String email, String token);
 
     /**
      * 个人中心
