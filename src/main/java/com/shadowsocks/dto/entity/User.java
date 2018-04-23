@@ -29,5 +29,6 @@ public class User implements Serializable{
 	private String realName;
 	private String bankCardNo;
 	private String withdrawPassword;
+	private String token;
 	private boolean isAdmin;
 }

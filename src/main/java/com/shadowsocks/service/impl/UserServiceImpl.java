@@ -2,8 +2,10 @@ package com.shadowsocks.service.impl;
 
 import com.shadowsocks.dao.UserDao;
 import com.shadowsocks.dto.entity.User;
+import com.shadowsocks.dto.request.BindBankCardRequestDto;
 import com.shadowsocks.dto.request.LoginDto;
 import com.shadowsocks.service.UserService;
+import com.shadowsocks.utils.CacheUtils;
 import jdk.nashorn.internal.runtime.options.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ public class UserServiceImpl implements UserService {
 
 	@Resource
 	private UserDao userDao;
+
 
 	@Override
 	public boolean isUsernameTaken(String username) {
@@ -73,7 +76,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-    public boolean bindBankCard(User user) {
+    public boolean bindBankCard(User user, BindBankCardRequestDto bindBankCardRequestDto) {
+		user.setRealName(bindBankCardRequestDto.getRealName());
+		user.setBankCardNo(bindBankCardRequestDto.getBankCardNo());
+		user.setWithdrawPassword(bindBankCardRequestDto.getWithdrawPassword());
+
+		CacheUtils.put(user.getToken(), user, 3600);
 		int result = userDao.bindBankCard(user);
 		return result == 1;
     }

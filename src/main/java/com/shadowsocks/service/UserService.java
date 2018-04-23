@@ -1,6 +1,7 @@
 package com.shadowsocks.service;
 
 import com.shadowsocks.dto.entity.User;
+import com.shadowsocks.dto.request.BindBankCardRequestDto;
 import com.shadowsocks.dto.request.LoginDto;
 import jdk.nashorn.internal.runtime.options.Option;
 
@@ -52,7 +53,7 @@ public interface UserService {
 	/**
 	 * 绑定银行卡
 	 * */
-	boolean bindBankCard(User user);
+	boolean bindBankCard(User user, BindBankCardRequestDto bindBankCardRequestDto);
 
 	/**
 	 * 根据用户名查询用户id

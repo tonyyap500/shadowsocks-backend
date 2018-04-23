@@ -18,10 +18,6 @@ CREATE TABLE `user` (
   UNIQUE KEY `email_unique_key` (`email`) USING HASH
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-ALTER TABLE `user` ADD real_name VARCHAR(40) DEFAULT NULL;
-ALTER TABLE `user` ADD bank_card_no VARCHAR(40) DEFAULT NULL;
-ALTER TABLE `user` ADD withdraw_password VARCHAR(20) DEFAULT NULL;
-CREATE UNIQUE INDEX `index_bank_card_no` ON `user`(bank_card_no) USING HASH;
 
 
 CREATE TABLE `emails` (
@@ -95,4 +91,27 @@ CREATE TABLE `admin` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `admin_user_unique_key` (`username`) USING HASH,
   UNIQUE KEY `admin_email_unique_key` (`email`) USING HASH
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+# 2018-02-24
+ALTER TABLE `user` ADD real_name VARCHAR(40) DEFAULT NULL;
+ALTER TABLE `user` ADD bank_card_no VARCHAR(40) DEFAULT NULL;
+ALTER TABLE `user` ADD withdraw_password VARCHAR(20) DEFAULT NULL;
+CREATE UNIQUE INDEX `index_bank_card_no` ON `user`(bank_card_no) USING HASH;
+
+ALTER TABLE `payment_order` ADD operator VARCHAR(40) DEFAULT NULL;
+
+CREATE TABLE `withdraw_order` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) NOT NULL,
+  `transaction_id` varchar(40) NOT NULL,
+  `amount` double NOT NULL,
+  `channel` varchar(30) NOT NULL,
+  `status` varchar(10) NOT NULL,
+  `remark` varchar(255) NOT NULL,
+  `operator` VARCHAR(30) NOT NULL,
+  `create_time` varchar(30) NOT NULL,
+  `update_time` varchar(30) DEFAULT NULL,
+  PRIMARY KEY(`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
