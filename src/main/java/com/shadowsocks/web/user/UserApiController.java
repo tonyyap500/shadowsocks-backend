@@ -226,7 +226,7 @@ public class UserApiController extends BaseController implements UserApi {
         String token = RandomStringUtils.generateRandomStringWithMD5();
         user.setToken(token);
         CacheUtils.put(token, user, 3600);
-        log.info("用户 {} 登录成功, 来源 IP {}", loginDto.getUsername(), loginDto.getIp());
+        log.info("用户 {} 登录成功, 来源 IP {}", loginDto.getUsername(), getCurrentIpAddress());
         return LoginResponse.builder().result(ResultEnum.SUCCESS).token(token).build();
     }
 
