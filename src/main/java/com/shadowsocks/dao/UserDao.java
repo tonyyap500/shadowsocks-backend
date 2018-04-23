@@ -45,7 +45,10 @@ public interface UserDao {
 					@Result(property = "lastLoginTime", column = "last_login_time"),
 					@Result(property = "lastLoginIp", column = "last_login_ip"),
 					@Result(property = "activeStatus", column = "active_status"),
-					@Result(property = "activeCode", column = "activeCode")
+					@Result(property = "activeCode", column = "activeCode"),
+					@Result(property = "realName", column = "real_name"),
+					@Result(property = "bankCardNo", column = "bank_card_no"),
+					@Result(property = "withdrawPassword", column = "withdraw_password")
 			}
 	)
 	User findUserByUsername(@Param("username") String username);
@@ -60,6 +63,6 @@ public interface UserDao {
 	@Select("select id from " + TABLE_NAME + " where username=#{username}")
 	Integer findUserIdByUsername(String username);
 
-	@Update("update " + TABLE_NAME + " set login_times=#{loginTimes}, last_login_ip=#{lastLoginIP}, last_login_time=#{lastLoginTime} where id=#{id}")
-	int update(User user);
+	@Update("update " + TABLE_NAME + " set real_name=#{realName}, bank_card_no=#{bankCardNo}, withdraw_password=#{withdrawPassword} where id=#{id}")
+	int bindBankCard(User user);
 }

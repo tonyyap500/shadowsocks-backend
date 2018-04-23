@@ -26,5 +26,8 @@ public class User implements Serializable{
 	private String lastLoginIp;
 	private String activeStatus;
 	private String activeCode;
+	private String realName;
+	private String bankCardNo;
+	private String withdrawPassword;
 	private boolean isAdmin;
 }

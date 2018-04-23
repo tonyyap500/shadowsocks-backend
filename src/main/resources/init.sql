@@ -18,6 +18,11 @@ CREATE TABLE `user` (
   UNIQUE KEY `email_unique_key` (`email`) USING HASH
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+ALTER TABLE `user` ADD real_name VARCHAR(40) DEFAULT NULL;
+ALTER TABLE `user` ADD bank_card_no VARCHAR(40) DEFAULT NULL;
+ALTER TABLE `user` ADD withdraw_password VARCHAR(20) DEFAULT NULL;
+CREATE UNIQUE INDEX `index_bank_card_no` ON `user`(bank_card_no) USING HASH;
+
 
 CREATE TABLE `emails` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

@@ -215,7 +215,7 @@ public class UserApiController extends BaseController implements UserApi {
         User user = userOptional.get();
         if(!user.getActiveStatus().equals("ACTIVE")) {
             log.info("用户名 {} 未激活", loginDto.getUsername());
-            return LoginResponse.builder().result(ResultEnum.FAIL).message("用户未激活").build();
+            return LoginResponse.builder().result(ResultEnum.FAIL).message("用户未激活，请到邮箱激活").build();
         }
         if(!user.getPassword().equals(loginDto.getPassword())) {
             log.info("用户 {}， 密码错误， 实际密码 {}， 输入密码 {} ", loginDto.getUsername(), user.getPassword(), loginDto.getPassword());

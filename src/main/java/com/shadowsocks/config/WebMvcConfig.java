@@ -19,6 +19,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 				.addPathPatterns("/server/**")
 				.addPathPatterns("/pay/**")
 				.addPathPatterns("/admin/**")
+				.addPathPatterns("/withdraw/**")
 				.excludePathPatterns("/admin/login")
 				.excludePathPatterns("/pay/callback");
 		super.addInterceptors(registry);

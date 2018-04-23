@@ -73,8 +73,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-    public int update(User user) {
-        return userDao.update(user);
+    public boolean bindBankCard(User user) {
+		int result = userDao.bindBankCard(user);
+		return result == 1;
     }
 
 	@Override

@@ -39,7 +39,6 @@ public interface UserService {
 	 * */
 	Optional<User> findUserByActiveCode(String activeCode);
 
-
 	/**
 	 * 更新登录信息
 	 * */
@@ -51,9 +50,9 @@ public interface UserService {
 	Optional<User> findUserByUsername(String username);
 
 	/**
-	 * 更新登录信息
+	 * 绑定银行卡
 	 * */
-	int update(User user);
+	boolean bindBankCard(User user);
 
 	/**
 	 * 根据用户名查询用户id
