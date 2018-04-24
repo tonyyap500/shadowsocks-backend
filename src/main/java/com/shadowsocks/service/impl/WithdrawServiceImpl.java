@@ -1,6 +1,7 @@
 package com.shadowsocks.service.impl;
 
 
+import com.google.common.collect.Lists;
 import com.shadowsocks.dao.WithdrawDao;
 import com.shadowsocks.dto.entity.Balance;
 import com.shadowsocks.dto.entity.User;
@@ -11,10 +12,12 @@ import com.shadowsocks.service.WithdrawService;
 import com.shadowsocks.utils.RandomStringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -57,5 +60,14 @@ public class WithdrawServiceImpl implements WithdrawService {
             return result == 1;
         }
         return false;
+    }
+
+    @Override
+    public List<Withdraw> findWithdrawHistory(int userId) {
+        List<Withdraw> withdrawList = withdrawDao.findWithdrawHistory(userId);
+        if(!CollectionUtils.isEmpty(withdrawList)) {
+            return withdrawList;
+        }
+        return Lists.newArrayList();
     }
 }

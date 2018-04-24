@@ -24,8 +24,8 @@ public interface WithdrawDao {
                     @Result(property = "status", column = "status"),
                     @Result(property = "remark", column = "remark"),
                     @Result(property = "operator", column = "operator"),
-                    @Result(property = "createTime", column = "createTime"),
-                    @Result(property = "updateTime", column = "updateTime"),
+                    @Result(property = "createTime", column = "create_time"),
+                    @Result(property = "updateTime", column = "update_time"),
             }
     )
     List<Withdraw> findWithdrawOrders(@Param("start") int start, @Param("pageSize") int pageSize);
@@ -34,4 +34,9 @@ public interface WithdrawDao {
             "create_time) values(#{userId}, #{transactionId}, #{amount}, #{channel}, #{status}, #{remark}, " +
             "#{operator}, #{createTime})")
     int createOrder(Withdraw withdraw);
+
+
+    @Select("select * from " + TABLE_NAME + " where user_id=#{userId}")
+    @ResultMap(BASE_RESULT)
+    List<Withdraw> findWithdrawHistory(@Param("userId") int userId);
 }

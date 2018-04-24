@@ -12,4 +12,8 @@ public class DecimalUtils {
     public static double halfRoundUp(double value) {
         return BigDecimal.valueOf(value).setScale(NUMBER_OF_DECIMAL, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
+
+    public static double roundDown(double value) {
+        return BigDecimal.valueOf(value).setScale(NUMBER_OF_DECIMAL, BigDecimal.ROUND_DOWN).doubleValue();
+    }
 }
