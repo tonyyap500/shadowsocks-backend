@@ -7,6 +7,7 @@ import com.shadowsocks.dto.entity.Withdraw;
 import com.shadowsocks.dto.enums.ResultEnum;
 import com.shadowsocks.dto.request.BindBankCardRequestDto;
 import com.shadowsocks.dto.request.WithdrawDto;
+import com.shadowsocks.dto.response.BankAccountDto;
 import com.shadowsocks.dto.response.WithdrawRecord;
 import com.shadowsocks.service.BalanceService;
 import com.shadowsocks.service.UserService;
@@ -52,6 +53,15 @@ public class WithdrawApiController extends BaseController implements WithdrawApi
         userService.bindBankCard(user, bindBankCardRequestDto);
         log.info("用户 {} 姓名 {} 绑定银行卡 {}", user.getUsername(), bindBankCardRequestDto.getRealName(), bindBankCardRequestDto.getBankCardNo());
         return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("银行卡绑定成功").build();
+    }
+
+    @Override
+    public BankAccountDto bankInfo(String token) {
+        User user = getUser(token);
+        BankAccountDto bankAccountDto = new BankAccountDto();
+        bankAccountDto.setName(user.getRealName());
+        bankAccountDto.setBankCardNo(user.getBankCardNo());
+        return bankAccountDto;
     }
 
     @Override

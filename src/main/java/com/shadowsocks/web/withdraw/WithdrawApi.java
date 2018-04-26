@@ -3,6 +3,7 @@ package com.shadowsocks.web.withdraw;
 import com.shadowsocks.dto.ResponseMessageDto;
 import com.shadowsocks.dto.request.BindBankCardRequestDto;
 import com.shadowsocks.dto.request.WithdrawDto;
+import com.shadowsocks.dto.response.BankAccountDto;
 import com.shadowsocks.dto.response.WithdrawRecord;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,14 @@ public interface WithdrawApi {
     @ApiOperation(value = "绑定银行卡", tags = "withdraw")
     @RequestMapping(path = "/bind", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     ResponseMessageDto bindBankCard(@RequestBody BindBankCardRequestDto bindBankCardRequestDto, String token);
+
+
+    /**
+     * 查看提现账户
+     * */
+    @ApiOperation(value = "查看提现账户", tags = "withdraw")
+    @RequestMapping(path = "/bankInfo", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    BankAccountDto bankInfo(String token);
 
 
     /**
