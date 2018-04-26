@@ -27,7 +27,7 @@ public interface WithdrawApi {
      * 查看提现账户
      * */
     @ApiOperation(value = "查看提现账户", tags = "withdraw")
-    @RequestMapping(path = "/bankInfo", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @RequestMapping(path = "/bankInfo", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     BankAccountDto bankInfo(String token);
 
 
