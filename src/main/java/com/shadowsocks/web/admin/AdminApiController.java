@@ -107,7 +107,7 @@ public class AdminApiController extends BaseController implements AdminApi {
             adminService.updateAdminInfo(admin.getId(), getCurrentIpAddress());
             return LoginResponse.builder().result(ResultEnum.SUCCESS).token(token).message("登录成功").build();
         }
-        return LoginResponse.builder().result(ResultEnum.SUCCESS).message("登录失败").build();
+        return LoginResponse.builder().result(ResultEnum.FAIL).message("登录失败").build();
     }
 
     @Override
