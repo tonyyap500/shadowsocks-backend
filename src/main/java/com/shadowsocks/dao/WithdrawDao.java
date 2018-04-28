@@ -12,7 +12,7 @@ public interface WithdrawDao {
     String BASE_RESULT = "withdrawResult";
     String TABLE_NAME = "withdraw_order";
 
-    @Select("select * from " + TABLE_NAME + " limit #{start}, #{pageSize} order by id desc")
+    @Select("select * from " + TABLE_NAME + " order by id desc limit #{start}, #{pageSize}")
     @Results(
             id = BASE_RESULT,
             value = {
