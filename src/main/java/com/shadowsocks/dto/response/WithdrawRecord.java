@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class WithdrawRecord {
     private int id;
+    private int userId;
     private String transactionId;
     private double amount;
     private String channel;

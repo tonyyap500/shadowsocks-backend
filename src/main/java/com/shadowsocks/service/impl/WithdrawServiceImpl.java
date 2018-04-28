@@ -7,6 +7,7 @@ import com.shadowsocks.dto.entity.Balance;
 import com.shadowsocks.dto.entity.User;
 import com.shadowsocks.dto.entity.Withdraw;
 import com.shadowsocks.dto.enums.WithdrawStatusEnum;
+import com.shadowsocks.dto.response.WithdrawRecord;
 import com.shadowsocks.service.BalanceService;
 import com.shadowsocks.service.WithdrawService;
 import com.shadowsocks.utils.RandomStringUtils;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -69,5 +71,45 @@ public class WithdrawServiceImpl implements WithdrawService {
             return withdrawList;
         }
         return Lists.newArrayList();
+    }
+
+    private WithdrawRecord buildWithdrawRecord(Withdraw withdraw) {
+        return WithdrawRecord.builder()
+                .id(withdraw.getId())
+                .userId(withdraw.getUserId())
+                .transactionId(withdraw.getTransactionId())
+                .amount(withdraw.getAmount())
+                .channel(withdraw.getChannel())
+                .status(withdraw.getStatus())
+                .remark(withdraw.getRemark())
+                .createTime(withdraw.getCreateTime())
+                .updateTime(withdraw.getUpdateTime())
+                .build();
+    }
+
+    @Override
+    public int getTotal() {
+        return withdrawDao.getTotal();
+    }
+
+    @Override
+    public List<WithdrawRecord> findWithdrawOrders(int start, int pageSize) {
+        List<Withdraw> withdrawList = withdrawDao.findWithdrawOrders(start, pageSize);
+        return withdrawList.stream().map(this::buildWithdrawRecord).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean finishOrder(String transactionId) {
+        String now = LocalDateTime.now().format(formatter);
+        int result = withdrawDao.finishOrder(now, transactionId);
+        return result == 1;
+    }
+
+    @Override
+    public boolean cancelOrder(String transactionId) {
+        //TODO 考虑是否要将修改余额
+        String now = LocalDateTime.now().format(formatter);
+        int result = withdrawDao.cancelOrder(now, transactionId);
+        return result == 1;
     }
 }

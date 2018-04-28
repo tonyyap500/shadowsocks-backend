@@ -30,6 +30,11 @@ public interface WithdrawDao {
     )
     List<Withdraw> findWithdrawOrders(@Param("start") int start, @Param("pageSize") int pageSize);
 
+
+    @Select("select count(*) from  " + TABLE_NAME)
+    int getTotal();
+
+
     @Insert("insert into " + TABLE_NAME + "(user_id, transaction_id, amount, channel, status, remark, operator," +
             "create_time) values(#{userId}, #{transactionId}, #{amount}, #{channel}, #{status}, #{remark}, " +
             "#{operator}, #{createTime})")
@@ -39,4 +44,10 @@ public interface WithdrawDao {
     @Select("select * from " + TABLE_NAME + " where user_id=#{userId} order by id desc")
     @ResultMap(BASE_RESULT)
     List<Withdraw> findWithdrawHistory(@Param("userId") int userId);
+
+    @Update("update " + TABLE_NAME + " set status='FINISHED', update_time=#{updateTime} where transaction_id=#{transactionId} and status='PENDING'")
+    int finishOrder(@Param("updateTime") String updateTime, @Param("transactionId") String transactionId);
+
+    @Update("update " + TABLE_NAME + " set status='CANCELLED', update_time=#{updateTime} where transaction_id=#{transactionId} and status='PENDING'")
+    int cancelOrder(@Param("updateTime") String updateTime, @Param("transactionId") String transactionId);
 }

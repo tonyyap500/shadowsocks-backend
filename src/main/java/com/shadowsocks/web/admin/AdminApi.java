@@ -1,10 +1,13 @@
 package com.shadowsocks.web.admin;
 
-import com.shadowsocks.dto.PaymentOrderResponse;
-import com.shadowsocks.dto.ResponseMessageDto;
+import com.shadowsocks.dto.enums.PayStatusEnum;
+import com.shadowsocks.dto.enums.WithdrawStatusEnum;
+import com.shadowsocks.dto.response.PaymentOrderResponse;
+import com.shadowsocks.dto.response.ResponseMessageDto;
 import com.shadowsocks.dto.request.LoginDto;
 import com.shadowsocks.dto.request.ServerRequestDto;
 import com.shadowsocks.dto.response.LoginResponse;
+import com.shadowsocks.dto.response.WithdrawOrderResponse;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,11 +34,18 @@ public interface AdminApi {
     @RequestMapping(path = "/findOrders", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     PaymentOrderResponse findPayOrders(String token, int start, int pageSize);
 
-    enum OrderStatus {
-        CANCELLED,
-        FINISHED
-    }
-    @ApiOperation(value = "标记为完成状态", tags = "admin")
+
+    @ApiOperation(value = "更新充值订单状态", tags = "admin")
     @RequestMapping(path = "/updateOrder", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
-    ResponseMessageDto updateOrder(String token, String transactionId, OrderStatus orderStatus);
+    ResponseMessageDto updatePayOrder(String token, String transactionId, PayStatusEnum payStatusEnum);
+
+
+    @ApiOperation(value = "查询提现订单", tags = "admin")
+    @RequestMapping(path = "/findWithdrawOrders", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+    WithdrawOrderResponse findWithdrawOrders(String token, int start, int pageSize);
+
+
+    @ApiOperation(value = "更新充值订单状态", tags = "admin")
+    @RequestMapping(path = "/updateWithdrawOrder", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+    ResponseMessageDto updateWithdrawOrder(String token, String transactionId, WithdrawStatusEnum withdrawStatusEnum);
 }

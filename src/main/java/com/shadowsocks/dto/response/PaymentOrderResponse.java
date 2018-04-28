@@ -1,4 +1,4 @@
-package com.shadowsocks.dto;
+package com.shadowsocks.dto.response;
 
 import com.shadowsocks.dto.entity.PayOrder;
 import lombok.AllArgsConstructor;

@@ -2,7 +2,7 @@ package com.shadowsocks.web.server;
 
 
 import com.google.common.collect.Lists;
-import com.shadowsocks.dto.ResponseMessageDto;
+import com.shadowsocks.dto.response.ResponseMessageDto;
 import com.shadowsocks.dto.entity.*;
 import com.shadowsocks.dto.enums.ResultEnum;
 import com.shadowsocks.dto.response.CityDto;
@@ -13,7 +13,6 @@ import com.shadowsocks.service.EmailService;
 import com.shadowsocks.service.ServerService;
 import com.shadowsocks.utils.EmailUtils;
 import com.shadowsocks.utils.HtmlUtils;
-import com.shadowsocks.utils.SessionKeyUtils;
 import com.shadowsocks.web.BaseController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -1,6 +1,6 @@
 package com.shadowsocks.web.withdraw;
 
-import com.shadowsocks.dto.ResponseMessageDto;
+import com.shadowsocks.dto.response.ResponseMessageDto;
 import com.shadowsocks.dto.request.BindBankCardRequestDto;
 import com.shadowsocks.dto.request.WithdrawDto;
 import com.shadowsocks.dto.response.BankAccountDto;

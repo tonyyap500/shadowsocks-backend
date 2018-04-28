@@ -1,13 +1,13 @@
 package com.shadowsocks.web.admin;
 
 import com.google.common.collect.Lists;
-import com.shadowsocks.dto.PaymentOrderResponse;
-import com.shadowsocks.dto.ResponseMessageDto;
+import com.shadowsocks.dto.enums.PayStatusEnum;
+import com.shadowsocks.dto.enums.WithdrawStatusEnum;
+import com.shadowsocks.dto.response.*;
 import com.shadowsocks.dto.entity.*;
 import com.shadowsocks.dto.enums.ResultEnum;
 import com.shadowsocks.dto.request.LoginDto;
 import com.shadowsocks.dto.request.ServerRequestDto;
-import com.shadowsocks.dto.response.LoginResponse;
 import com.shadowsocks.service.*;
 import com.shadowsocks.utils.CacheUtils;
 import com.shadowsocks.utils.EmailUtils;
@@ -31,12 +31,16 @@ public class AdminApiController extends BaseController implements AdminApi {
     private PayService payService;
     private BalanceService balanceService;
     private AdminService adminService;
+    private WithdrawService withdrawService;
 
-    public AdminApiController(ServerService serverService, PayService payService, BalanceService balanceService, AdminService adminService) {
+    public AdminApiController(ServerService serverService, PayService payService,
+                              BalanceService balanceService, AdminService adminService,
+                              WithdrawService withdrawService) {
         this.serverService = serverService;
         this.payService = payService;
         this.balanceService = balanceService;
         this.adminService = adminService;
+        this.withdrawService = withdrawService;
     }
 
     private List<Server> transferServerDtoToServerList(ServerRequestDto serverRequestDto) {
@@ -117,13 +121,13 @@ public class AdminApiController extends BaseController implements AdminApi {
     }
 
     @Override
-    public ResponseMessageDto updateOrder(String token, String transactionId, OrderStatus orderStatus) {
+    public ResponseMessageDto updatePayOrder(String token, String transactionId, PayStatusEnum payStatusEnum) {
         Admin admin = getAdmin(token);
         if(!admin.isAdmin()) {
             return ResponseMessageDto.builder().result(ResultEnum.FAIL).message("更新订单状态失败").build();
         }
         //TODO 用MyBatis事务
-        if(orderStatus.equals(OrderStatus.CANCELLED)) {
+        if(payStatusEnum.equals(PayStatusEnum.CANCELLED)) {
             boolean result = payService.cancelOrder(transactionId);
             if(result) {
                 return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("订单取消成功").build();
@@ -140,5 +144,37 @@ public class AdminApiController extends BaseController implements AdminApi {
             }
         }
         return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("订单状态更新成功").build();
+    }
+
+    @Override
+    public WithdrawOrderResponse findWithdrawOrders(String token, int start, int pageSize) {
+        Admin admin = getAdmin(token);
+        if(!admin.isAdmin()) {
+            return WithdrawOrderResponse.builder().total(0).withdrawRecordList(Lists.newArrayList()).build();
+        }
+        List<WithdrawRecord> withdrawRecordList = withdrawService.findWithdrawOrders(start, pageSize);
+        int total = withdrawService.getTotal();
+        return WithdrawOrderResponse.builder().withdrawRecordList(withdrawRecordList).total(total).build();
+    }
+
+    @Override
+    public ResponseMessageDto updateWithdrawOrder(String token, String transactionId, WithdrawStatusEnum withdrawStatusEnum) {
+        Admin admin = getAdmin(token);
+        if(!admin.isAdmin()) {
+            return ResponseMessageDto.builder().result(ResultEnum.FAIL).message("更新订单状态失败").build();
+        }
+
+        if(withdrawStatusEnum.equals(WithdrawStatusEnum.CANCELLED)) {
+            boolean result = withdrawService.cancelOrder(transactionId);
+            if(result) {
+                return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("订单取消成功").build();
+            }
+        }else {
+            boolean result = withdrawService.finishOrder(transactionId);
+            if(result) {
+                return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("订单状态更新成功").build();
+            }
+        }
+        return ResponseMessageDto.builder().result(ResultEnum.FAIL).message("更新订单状态失败").build();
     }
 }

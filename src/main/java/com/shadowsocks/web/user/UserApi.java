@@ -1,6 +1,6 @@
 package com.shadowsocks.web.user;
 
-import com.shadowsocks.dto.ResponseMessageDto;
+import com.shadowsocks.dto.response.ResponseMessageDto;
 import com.shadowsocks.dto.request.LoginDto;
 import com.shadowsocks.dto.request.RegisterDto;
 import com.shadowsocks.dto.response.LoginResponse;

@@ -17,7 +17,7 @@ import com.shadowsocks.service.BalanceService;
 import com.shadowsocks.service.EmailService;
 import com.shadowsocks.utils.*;
 import com.shadowsocks.web.BaseController;
-import com.shadowsocks.dto.ResponseMessageDto;
+import com.shadowsocks.dto.response.ResponseMessageDto;
 import com.shadowsocks.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;

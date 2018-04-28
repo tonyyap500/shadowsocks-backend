@@ -1,6 +1,6 @@
 package com.shadowsocks.web.withdraw;
 
-import com.shadowsocks.dto.ResponseMessageDto;
+import com.shadowsocks.dto.response.ResponseMessageDto;
 import com.shadowsocks.dto.entity.Balance;
 import com.shadowsocks.dto.entity.User;
 import com.shadowsocks.dto.entity.Withdraw;

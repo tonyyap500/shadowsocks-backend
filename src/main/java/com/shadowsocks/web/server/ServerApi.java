@@ -1,7 +1,7 @@
 package com.shadowsocks.web.server;
 
 
-import com.shadowsocks.dto.ResponseMessageDto;
+import com.shadowsocks.dto.response.ResponseMessageDto;
 import com.shadowsocks.dto.response.CityDto;
 import com.shadowsocks.dto.response.CountryDto;
 import com.shadowsocks.dto.response.ServerDto;

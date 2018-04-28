@@ -1,7 +1,7 @@
 package com.shadowsocks.service;
 
 import com.shadowsocks.dto.PaymentDto;
-import com.shadowsocks.dto.PaymentOrderResponse;
+import com.shadowsocks.dto.response.PaymentOrderResponse;
 import com.shadowsocks.dto.entity.PayOrder;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.shadowsocks.dto;
+package com.shadowsocks.dto.response;
 
 import com.shadowsocks.dto.enums.ResultEnum;
 import lombok.AllArgsConstructor;

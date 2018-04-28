@@ -2,7 +2,7 @@ package com.shadowsocks.service.impl;
 
 import com.shadowsocks.dao.PayDao;
 import com.shadowsocks.dto.PaymentDto;
-import com.shadowsocks.dto.PaymentOrderResponse;
+import com.shadowsocks.dto.response.PaymentOrderResponse;
 import com.shadowsocks.dto.entity.PayOrder;
 import com.shadowsocks.dto.enums.PayStatusEnum;
 import com.shadowsocks.service.PayService;
