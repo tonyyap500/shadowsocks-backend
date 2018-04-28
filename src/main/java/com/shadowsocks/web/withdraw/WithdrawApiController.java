@@ -70,7 +70,7 @@ public class WithdrawApiController extends BaseController implements WithdrawApi
         if(!withdrawDto.getWithdrawPassword().equals(user.getWithdrawPassword())) {
             return ResponseMessageDto.builder().result(ResultEnum.FAIL).message("提现密码错误").build();
         }
-        if(withdrawDto.getAmount() <= 20) {
+        if(withdrawDto.getAmount() < 20) {
             return ResponseMessageDto.builder().result(ResultEnum.FAIL).message("提现失败，提现金额至少为20元").build();
         }
 
