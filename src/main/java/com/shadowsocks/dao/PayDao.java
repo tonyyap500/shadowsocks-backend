@@ -36,7 +36,7 @@ public interface PayDao {
     )
     PayOrder findOrderByTransactionId(@Param("transactionId") String transactionId);
 
-    @Select("select * from " + TABLE_NAME + " where user_id=#{userId}")
+    @Select("select * from " + TABLE_NAME + " where user_id=#{userId} order by id desc")
     @ResultMap(BASE_RESULT)
     List<PayOrder> findOrdersByUserId(@Param("userId") int userId);
 

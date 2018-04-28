@@ -36,7 +36,7 @@ public interface WithdrawDao {
     int createOrder(Withdraw withdraw);
 
 
-    @Select("select * from " + TABLE_NAME + " where user_id=#{userId}")
+    @Select("select * from " + TABLE_NAME + " where user_id=#{userId} order by id desc")
     @ResultMap(BASE_RESULT)
     List<Withdraw> findWithdrawHistory(@Param("userId") int userId);
 }
