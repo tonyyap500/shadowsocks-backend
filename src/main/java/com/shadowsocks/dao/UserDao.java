@@ -57,6 +57,10 @@ public interface UserDao {
 	@ResultMap(BASE_RESULT)
 	User findUserByActiveCode(@Param("activeCode") String activeCode);
 
+	@Select("select * from " + TABLE_NAME + " where id=#{id}")
+	@ResultMap(BASE_RESULT)
+	User findUserById(@Param("id") int id);
+
 	@Update("update " + TABLE_NAME + " set login_times=#{loginTimes}, last_login_ip=#{lastLoginIp}, last_login_time=#{lastLoginTime} where id=#{id}")
     void updateUserById(@Param("id") int id, @Param("loginTimes") int loginTimes, @Param("lastLoginIp") String lastLoginIp, @Param("lastLoginTime") String lastLoginTime);
 

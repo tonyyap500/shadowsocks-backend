@@ -3,17 +3,14 @@ package com.shadowsocks.service.impl;
 import com.shadowsocks.dao.UserDao;
 import com.shadowsocks.dto.entity.User;
 import com.shadowsocks.dto.request.BindBankCardRequestDto;
-import com.shadowsocks.dto.request.LoginDto;
 import com.shadowsocks.service.UserService;
 import com.shadowsocks.utils.CacheUtils;
-import jdk.nashorn.internal.runtime.options.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 import java.util.Optional;
 
 
@@ -89,5 +86,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Integer findUserIdByUsername(String username) {
 		return userDao.findUserIdByUsername(username);
+	}
+
+	@Override
+	public Optional<User> findUserById(int id) {
+		User user = userDao.findUserById(id);
+		return Optional.ofNullable(user);
 	}
 }

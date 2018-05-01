@@ -45,4 +45,9 @@ public class HtmlUtils {
         String fileName = "purchase.html";
         return buildContent(fileName);
     }
+
+    public static String getNotifyToReloadHtml() {
+        String fileName = "notify.html";
+        return buildContent(fileName);
+    }
 }

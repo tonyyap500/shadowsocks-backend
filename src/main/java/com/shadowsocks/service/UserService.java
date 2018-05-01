@@ -59,4 +59,9 @@ public interface UserService {
 	 * 根据用户名查询用户id
 	 * */
 	Integer findUserIdByUsername(String username);
+
+	/**
+	 * 根据用户id查询用户
+	 * */
+	Optional<User> findUserById(int id);
 }
