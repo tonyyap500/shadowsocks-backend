@@ -8,6 +8,11 @@ public enum GaotongEnum {
 	WEIXIN,
 
 	/**
+	 * 优惠
+	 * */
+	PROMUTION,
+
+	/**
 	 * QQ扫码
 	 * */
 	QQPAY,

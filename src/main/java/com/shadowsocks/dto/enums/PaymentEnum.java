@@ -1,6 +1,10 @@
 package com.shadowsocks.dto.enums;
 
 public enum PaymentEnum {
+    /**
+     * 优惠
+     * */
+    PROMUTION,
 
     WECHAT
 

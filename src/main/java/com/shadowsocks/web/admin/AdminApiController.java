@@ -1,7 +1,9 @@
 package com.shadowsocks.web.admin;
 
 import com.google.common.collect.Lists;
+import com.shadowsocks.dto.PaymentDto;
 import com.shadowsocks.dto.enums.PayStatusEnum;
+import com.shadowsocks.dto.enums.PaymentEnum;
 import com.shadowsocks.dto.enums.WithdrawStatusEnum;
 import com.shadowsocks.dto.response.*;
 import com.shadowsocks.dto.entity.*;
@@ -141,11 +143,63 @@ public class AdminApiController extends BaseController implements AdminApi {
                 PayOrder payOrder = payOrderOptional.get();
                 log.info("{} 增加用户 [userId={}] 余额 {} 元", admin.getUsername(), payOrder.getUserId(), payOrder.getAmount());
                 balanceService.addBalanceByUserId(payOrder.getUserId(), payOrder.getAmount());
+                 Double count=payOrderOptional.get().getAmount()/10;
+                 Double amount=0D;
+                if(count>=3){
+                    if (count.intValue()>=3&&count.intValue()<6){
+                        amount=5D;
+                    }
+                    if (count.intValue()>=6&&count.intValue()<12){
+                        amount=1D;
+                    }
+                    if (count.intValue()>=12){
+                        amount=2D;
+                    }
+                    String transactionNo = RandomStringUtils.generateRandomStringWithMD5();
+                    addOrder(transactionNo,payOrderOptional.get().getUserId(),amount,payOrderOptional.get().getRemark());
+                    updatePayOrderPROMUTION(token,transactionNo,PayStatusEnum.CANCELLED);
+
+                }
             }
         }
         return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("订单状态更新成功").build();
     }
+    public ResponseMessageDto updatePayOrderPROMUTION(String token, String transactionId, PayStatusEnum payStatusEnum) {
+        Admin admin = getAdmin(token);
+        if(!admin.isAdmin()) {
+            return ResponseMessageDto.builder().result(ResultEnum.FAIL).message("更新订单状态失败").build();
+        }
+        //TODO 用MyBatis事务
+        if(payStatusEnum.equals(PayStatusEnum.CANCELLED)) {
+            boolean result = payService.cancelOrder(transactionId);
+            if(result) {
+                return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("订单取消成功").build();
+            }
+        }
+        Optional<PayOrder> payOrderOptional = payService.findOrderByTransactionId(transactionId);
+        if(payOrderOptional.isPresent()) {
+            log.info("{} 标记充值订单 {} 为完成状态", admin.getUsername(), transactionId);
+            boolean result = payService.finishOrder(transactionId);
+            if(result) {
+                PayOrder payOrder = payOrderOptional.get();
+                log.info("{} 增加用户 [userId={}] 余额 {} 元", admin.getUsername(), payOrder.getUserId(), payOrder.getAmount());
+                balanceService.addBalanceByUserId(payOrder.getUserId(), payOrder.getAmount());
 
+                }
+            }
+        return ResponseMessageDto.builder().result(ResultEnum.SUCCESS).message("订单状态更新成功").build();
+    }
+    private  void  addOrder(String transactionId,int userId ,double amount,String userName){
+
+        PaymentDto paymentDto = PaymentDto.builder()
+                .transactionId(transactionId)
+                .userId(userId)
+                .channel(PaymentEnum.PROMUTION.name())
+                .amount(amount)
+                .remark(userName)
+                .build();
+        payService.createOrder(paymentDto);
+    }
     @Override
     public WithdrawOrderResponse findWithdrawOrders(String token, int start, int pageSize) {
         Admin admin = getAdmin(token);
