@@ -155,6 +155,9 @@ public class AdminApiController extends BaseController implements AdminApi {
                     if (count.intValue()>=12){
                         amount=20D;
                     }
+                    if (count.intValue()>=24){
+                        amount=60D;
+                    }
                     String transactionNo = RandomStringUtils.generateRandomStringWithMD5();
                     addOrder(transactionNo,payOrderOptional.get().getUserId(),amount,payOrderOptional.get().getRemark());
                     updatePayOrderPROMUTION(token,transactionNo,PayStatusEnum.FINISHED);
