@@ -150,10 +150,10 @@ public class AdminApiController extends BaseController implements AdminApi {
                         amount=5D;
                     }
                     if (count.intValue()>=6&&count.intValue()<12){
-                        amount=1D;
+                        amount=10D;
                     }
                     if (count.intValue()>=12){
-                        amount=2D;
+                        amount=20D;
                     }
                     String transactionNo = RandomStringUtils.generateRandomStringWithMD5();
                     addOrder(transactionNo,payOrderOptional.get().getUserId(),amount,payOrderOptional.get().getRemark());
