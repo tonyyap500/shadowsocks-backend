@@ -157,7 +157,7 @@ public class AdminApiController extends BaseController implements AdminApi {
                     }
                     String transactionNo = RandomStringUtils.generateRandomStringWithMD5();
                     addOrder(transactionNo,payOrderOptional.get().getUserId(),amount,payOrderOptional.get().getRemark());
-                    updatePayOrderPROMUTION(token,transactionNo,PayStatusEnum.CANCELLED);
+                    updatePayOrderPROMUTION(token,transactionNo,PayStatusEnum.FINISHED);
 
                 }
             }
