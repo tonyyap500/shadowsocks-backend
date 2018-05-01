@@ -4,7 +4,7 @@ public enum PaymentEnum {
     /**
      * 优惠
      * */
-    PROMUTION,
+    PROMOTION,
 
     WECHAT
 

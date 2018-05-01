@@ -10,7 +10,7 @@ public enum GaotongEnum {
 	/**
 	 * 优惠
 	 * */
-	PROMUTION,
+	PROMOTION,
 
 	/**
 	 * QQ扫码

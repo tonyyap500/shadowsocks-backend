@@ -194,7 +194,7 @@ public class AdminApiController extends BaseController implements AdminApi {
         PaymentDto paymentDto = PaymentDto.builder()
                 .transactionId(transactionId)
                 .userId(userId)
-                .channel(PaymentEnum.PROMUTION.name())
+                .channel(PaymentEnum.PROMOTION.name())
                 .amount(amount)
                 .remark(userName)
                 .build();
