@@ -1,0 +1,20 @@
+spring:
+    datasource:
+      url: jdbc:mysql://localhost:3306/shadowsocks?useUnicode=true&characterEncoding=utf8
+      username: root
+      password: StevenMichael88
+      type: com.alibaba.druid.pool.DruidDataSource
+
+server:
+  port: 8822
+  contextPath: /shadowsocks
+
+global:
+  url: "https://api.404here.com"
+  webUrl: "https://www.404here.com"
+
+pay:
+  gaotong:
+    merchantNo: 13570
+    publicKey: b1b54af568a6846602955f5e8a862929
+    callback: https://api.oceanhere.com/shadowsocks/pay/callback
